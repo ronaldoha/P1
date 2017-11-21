@@ -1,31 +1,28 @@
 package sample;
 
-import com.sun.tools.javadoc.Start;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
+
 
 public class Main extends Application {
 
     //SCENE
 
     Stage window1;
-    Button button1, button2, button3;
-
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+    Button buttonWorld, buttonSettings, buttonExit, buttonBack;
+    Scene scene1, scene2;
+    CheckBox buttonSetFS;
+    Slider buttonSetVol;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
 
         Image menu1 = new Image("http://ontheworldmap.com/world/world-political-map-with-countries.jpg"); // change URL for actual img.
 
@@ -35,22 +32,21 @@ public class Main extends Application {
 
         window1 = primaryStage;
         window1.setTitle("Journally");
+        window1.setResizable(false);
 
+        //SCENE1
 
         VBox centralMenu = new VBox();
 
-        button1 = new Button("World");
-        button2 = new Button("Settings");
-        button2.setOnAction(e -> {
-            window1.setScene(Settings.start1());
+        buttonWorld = new Button("World");
+
+        buttonSettings = new Button("Settings");
+        buttonSettings.setOnAction(e -> {
+            window1.setScene(scene2);
         });
-        button3 = new Button("Exit");
 
-        //button1.setPrefSize(100, 20);
-        //button2.setPrefSize(100, 20);
-        //button3.setPrefSize(100, 20);
-
-        button3.setOnAction(e -> {
+        buttonExit = new Button("Exit");
+        buttonExit.setOnAction(e -> {
             boolean result = ConfirmBox.display("Exit", "Are you sure do you want to Exit?");
             if (result == true) {
                 window1.close();
@@ -60,37 +56,39 @@ public class Main extends Application {
         centralMenu.setSpacing(20);
         centralMenu.setBackground(background);
         centralMenu.setAlignment(Pos.CENTER);
-        centralMenu.getChildren().addAll(button1, button2, button3);
-        centralMenu.heightProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                double height = (double) newValue;
-                button1.setPrefHeight(height / 20);
-                button2.setPrefHeight(height / 20);
-                button3.setPrefHeight(height / 20);
-            }
-        });
-        centralMenu.widthProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                double width = (double) newValue;
-                button1.setPrefWidth(width / 5);
-                button2.setPrefWidth(width / 5);
-                button3.setPrefWidth(width / 5);
-            }
-        });
-        Scene scene1 = new Scene(centralMenu, 996, 499);
-        Scene scene2;
+        centralMenu.getChildren().addAll(buttonWorld, buttonSettings, buttonExit);
 
-        window1.setScene(scene1);
-        window1.show();
+        scene1 = new Scene(centralMenu, 996, 499);
 
 
         //SCENE 2
 
+        VBox layout = new VBox();
 
-        //Scene scene2 = new Scene(scene2);
+        buttonBack = new Button("BACK");
+        buttonBack.setOnAction(event -> {
+            window1.setScene(scene1);
+        });
+        buttonSetFS = new CheckBox("Full Screen");
 
+        buttonSetFS.setOnAction(e -> {
+            window1.setFullScreen(true);
+        });
+
+        buttonSetVol = new Slider(0, 10, 1);
+
+        layout.setSpacing(20);
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(buttonBack, buttonSetFS, buttonSetVol);
+
+        scene2 = new Scene(layout, 996, 499);
+
+        window1.setScene(scene1);
+        window1.show();
+
+    }
+    public static void main(String[] args) {
+        launch(args);
     }
 }
 
