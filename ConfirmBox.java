@@ -11,6 +11,7 @@ public class ConfirmBox extends Main{
     static boolean answer;
 
     public static boolean display(String title, String message) {
+
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
@@ -33,10 +34,13 @@ public class ConfirmBox extends Main{
             window.close();
         });
 
-        HBox layout = new HBox(10);
+        VBox layout = new VBox(10);
+        HBox layout2 = new HBox(10);
 
         //Add buttons
-        layout.getChildren().addAll(label, yesButton, noButton);
+        layout.getChildren().addAll(label, layout2);
+        layout2.getChildren().addAll(yesButton, noButton);
+        layout2.setAlignment(Pos.CENTER);
         layout.setAlignment(Pos.CENTER);
         Scene scene = new Scene(layout);
         window.setScene(scene);
