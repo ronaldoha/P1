@@ -29,15 +29,15 @@ public class Main extends Application {
         window1.setTitle("Journally");
         window1.setResizable(false);
 
-        //SCENE1
+        //SCENE1 (MAIN MENU)
         scene1 = new Scene(s1CentralMenu(), 996, 499);
 
 
-        //SCENE 2
+        //SCENE 2 (SETTINGS)
 
         scene2 = new Scene(s2CentralMenu(), 996, 499);
 
-        //SCENE3
+        //SCENE3 (WORLD)
 
         AnchorPane anchorPane = new AnchorPane();
         BorderPane borderPane = new BorderPane();
