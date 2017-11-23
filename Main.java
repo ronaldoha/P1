@@ -1,22 +1,29 @@
 package sample;
 
+import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Pos;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import javafx.scene.control.*;
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
 
+
 public class Main extends Application {
 
-      //SCENE
+
+
+    //SCENE
 
     Stage window1;
     Button buttonWorld, buttonSettings, buttonExit, buttonBack, mainMenu, buttonExit2;
@@ -25,22 +32,17 @@ public class Main extends Application {
     Slider buttonSetVol;
     Label label;
 
+    String musicFile = "Click.wav";
+    String music = "Music.mp3";
+
+    Media sound = new Media(new File(music).toURI().toString());
+    MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
+
     @Override
     public void start(Stage primaryStage){
 
-        //MUSIC
-
-        String musicFile = "BGMusic.mp3";
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-
-        //LOOP
-
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
-          
-          //STAGE 1
+        //STAGE 1
 
         window1 = primaryStage;
         window1.setTitle("Journally");
@@ -68,6 +70,8 @@ public class Main extends Application {
         //STAGE 1 INITIAL SETTINGS
         window1.setScene(scene1);
         window1.show();
+
+        mediaPlayer.play();
     }
 
     //BUTTONS WORLD SIDE BAR STYLE
@@ -94,14 +98,19 @@ public class Main extends Application {
         VBox vBoxMenu = new VBox();
         buttonWorld = new Button("World");
         buttonWorld.setOnAction(e ->{
+            soundClick();
             window1.setScene(scene3);
         });
 
         buttonSettings = new Button("Settings");
-        buttonSettings.setOnAction(e -> window1.setScene(scene2));
+        buttonSettings.setOnAction(e -> {
+            soundClick();
+            window1.setScene(scene2);
+        });
 
         buttonExit = new Button("Exit");
         buttonExit.setOnAction(e -> {
+            soundClick();
             boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
             if (result == true) {
                 window1.close();
@@ -113,7 +122,7 @@ public class Main extends Application {
         vBoxMenu.setAlignment(Pos.CENTER);
         vBoxMenu.getChildren().addAll(buttonWorld, buttonSettings, buttonExit);
 
-     return vBoxMenu;
+        return vBoxMenu;
     }
 
     //CENTRAL MENU (SCENE 2)
@@ -123,17 +132,19 @@ public class Main extends Application {
 
         buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
+            soundClick();
             window1.setFullScreen(true);
         });
 
         label = new Label("Volume");
 
-        buttonSetVol = new Slider(0, 10, 1);
+        buttonSetVol = new Slider(0,10,5);
         buttonSetVol.setMaxSize(200,10);
 
         buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {
             window1.setScene(scene1);
+            soundClick();
         });
 
         vBoxSettings.setSpacing(20);
@@ -144,6 +155,7 @@ public class Main extends Application {
 
     //SIDE BAR IN WORLD (SCENE 3)
     private VBox sidePane(){
+
         VBox vBoxBar = new VBox(){
             @Override
             protected void updateBounds() {
@@ -161,8 +173,10 @@ public class Main extends Application {
                 super.setHeight(40);
                 super.setOnMouseEntered(e -> super.setStyle(HOVERED_BUTTON_STYLE));
                 super.setOnMouseExited(e -> super.setStyle(IDLE_BUTTON_STYLE));
-                super.setOnAction(e -> window1.setScene(scene1));
-
+                super.setOnAction(e ->{
+                    window1.setScene(scene1);
+                    soundClick();
+                });
             }
         };
         buttonExit2 = new Button("Exit"){
@@ -176,6 +190,7 @@ public class Main extends Application {
                     boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
                     if(result == true) {
                         window1.close();
+                    soundClick();
                     }
                 });
             }
@@ -188,8 +203,18 @@ public class Main extends Application {
         return vBoxBar;
     }
 
+    // BUTTONS SOUNDS
+    private Media soundClick(){
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.stop();
+        mediaPlayer.play();
+
+        return sound;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
-

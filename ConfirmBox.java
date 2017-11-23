@@ -5,6 +5,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+
 public class ConfirmBox extends Main{
 
     //Create variable
