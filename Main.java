@@ -16,19 +16,7 @@ import java.io.File;
 
 public class Main extends Application {
 
-      //MUSIC
-
-        String musicFile = "BGMusic.mp3";
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-
-        //LOOP
-
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
-    
-    //SCENE
+      //SCENE
 
     Stage window1;
     Button buttonWorld, buttonSettings, buttonExit, buttonBack, mainMenu, buttonExit2;
@@ -40,7 +28,19 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
 
-        //STAGE 1
+        //MUSIC
+
+        String musicFile = "BGMusic.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+
+        //LOOP
+
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+          
+          //STAGE 1
 
         window1 = primaryStage;
         window1.setTitle("Journally");
