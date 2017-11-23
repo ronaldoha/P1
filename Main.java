@@ -11,6 +11,18 @@ import javafx.scene.control.*;
 
 public class Main extends Application {
 
+      //MUSIC
+
+        String musicFile = "BGMusic.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+
+        //LOOP
+
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+    
     //SCENE
 
     Stage window1;
