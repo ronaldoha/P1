@@ -21,9 +21,6 @@ import java.io.File;
 
 public class Main extends Application {
 
-int y;
-
-
     //SCENE
 
     Stage window1;
