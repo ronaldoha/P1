@@ -21,7 +21,7 @@ import java.io.File;
 
 public class Main extends Application {
 
-int x;
+int y;
 
 
     //SCENE
