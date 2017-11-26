@@ -21,6 +21,8 @@ import java.io.File;
 
 public class Main extends Application {
 
+
+
     //SCENE
 
     Stage window1;
@@ -30,8 +32,11 @@ public class Main extends Application {
     Slider buttonSetVol;
     Label label;
 
+    String pin = "PuttingPin.wav";
+    String incorrect ="Incorrect Answer.mp3";
+    String correct = "Correct Answer.wav";
     String musicFile = "Click.wav";
-    String music = "Music.mp3";
+    String music = "BGMusic.mp3";
 
     Media sound = new Media(new File(music).toURI().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(sound);
@@ -188,7 +193,7 @@ public class Main extends Application {
                     boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
                     if(result == true) {
                         window1.close();
-                    soundClick();
+                        soundClick();
                     }
                 });
             }
@@ -211,6 +216,37 @@ public class Main extends Application {
 
         return sound;
     }
+
+    private Media correct(){
+
+        Media sound = new Media(new File(correct).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.stop();
+        mediaPlayer.play();
+
+        return sound;
+    }
+
+    private Media incorrect(){
+
+        Media sound = new Media(new File(incorrect).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.stop();
+        mediaPlayer.play();
+
+        return sound;
+    }
+
+    private Media putPin(){
+
+        Media sound = new Media(new File(pin).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.stop();
+        mediaPlayer.play();
+
+        return sound;
+    }
+
 
     public static void main(String[] args) {
         launch(args);
