@@ -20,6 +20,9 @@ public class App extends Application {
     Slider buttonSetVol;
     Label label;
 
+    private Sound clickSound = new Sound("ClickSound.wav");
+    private Sound backgroundSound = new Sound("BackgroundMusic.mp3");
+
     @Override
     public void start(Stage primaryStage){
 
@@ -49,7 +52,7 @@ public class App extends Application {
         window1.setScene(scene1);
         window1.show();
 
-        Sound.play("BackgroundMusic.mp3");
+        backgroundSound.play();
     }
 
     //BUTTONS WORLD SIDE BAR STYLE
@@ -74,19 +77,19 @@ public class App extends Application {
         VBox vBoxMenu = new VBox();
         buttonWorld = new Button("World");
         buttonWorld.setOnAction(e ->{
-            Sound.play("ClickSound.wav");
+            clickSound.play();
             window1.setScene(scene3);
         });
 
         buttonSettings = new Button("Settings");
         buttonSettings.setOnAction(e -> {
-            Sound.play("ClickSound.wav");
+            clickSound.play();
             window1.setScene(scene2);
         });
 
         buttonExit = new Button("Exit");
         buttonExit.setOnAction(e -> {
-            Sound.play("ClickSound.wav");
+            clickSound.play();
             boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
             if (result) window1.close();
         });
@@ -107,7 +110,7 @@ public class App extends Application {
         buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
             window1.setFullScreen(((CheckBox)e.getSource()).isSelected());
-            Sound.play("ClickSound.wav");
+            clickSound.play();
 
         });
 
@@ -119,7 +122,7 @@ public class App extends Application {
         buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {
             window1.setScene(scene1);
-            Sound.play("ClickSound.wav");
+            clickSound.play();
         });
 
         vBoxSettings.setSpacing(20);
@@ -150,7 +153,7 @@ public class App extends Application {
                 super.setOnMouseExited(e -> super.setStyle(IDLE_BUTTON_STYLE));
                 super.setOnAction(e ->{
                     window1.setScene(scene1);
-                    Sound.play("ClickSound.wav");
+                    clickSound.play();
                 });
             }
         };
@@ -165,7 +168,7 @@ public class App extends Application {
                     boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
                     if(result) {
                         window1.close();
-                        Sound.play("ClickSound.wav");
+                        clickSound.play();
                     }
                 });
             }
