@@ -106,8 +106,9 @@ public class Main extends Application {
 
         buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
+            window1.setFullScreen(((CheckBox)e.getSource()).isSelected());
             Sound.play("ClickSound.wav");
-            window1.setFullScreen(true);
+
         });
 
         label = new Label("Volume");
