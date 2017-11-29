@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
 
-public class Main extends Application {
+public class App extends Application {
 
     //SCENE
     Stage window1;
@@ -141,7 +141,7 @@ public class Main extends Application {
             }
         };
 
-        mainMenu = new Button("Main Menu"){
+        mainMenu = new Button("App Menu"){
             @Override
             protected void setHeight(double value) {
                 super.setWidth(100);

@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 
 
-public class ConfirmBox extends Main{
+public class ConfirmBox extends App {
 
     //Create variable
     static boolean answer;
