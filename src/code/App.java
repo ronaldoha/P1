@@ -12,19 +12,16 @@ import resources.Sound;
 
 public class App extends Application {
 
-    //SCENE
-    Stage window1;
-    Button buttonWorld, buttonSettings, buttonExit, buttonBack, mainMenu, buttonExit2;
-    Scene scene1, scene2, scene3;
-    CheckBox buttonSetFS;
-    Slider buttonSetVol;
-    Label label;
+    //Persistent GUI controls
+    private Stage window1;
+    private Scene scene1, scene2, scene3;
 
+    //Sound controls
     private Sound clickSound = new Sound("ClickSound.wav");
     private Sound backgroundSound = new Sound("BackgroundMusic.mp3");
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
 
         //STAGE 1
         window1 = primaryStage;
@@ -34,19 +31,11 @@ public class App extends Application {
         //SCENE1 (MAIN MENU)
         scene1 = new Scene(s1CentralMenu(), 996, 499);
 
-
         //SCENE 2 (SETTINGS)
         scene2 = new Scene(s2CentralMenu(), 996, 499);
 
         //SCENE3 (WORLD)
-        AnchorPane anchorPane = new AnchorPane();
-        BorderPane borderPane = new BorderPane();
-
-        anchorPane.getChildren().addAll(borderPane);
-        borderPane.setRight(sidePane());
-        borderPane.setPrefSize(996,499);
-
-        scene3 = new Scene(anchorPane, 996, 499);
+        scene3 = new Scene(s3Pane(), 996, 499);
 
         //STAGE 1 INITIAL SETTINGS
         window1.setScene(scene1);
@@ -61,7 +50,7 @@ public class App extends Application {
             "-fx-outer-border: none; -fx-inner-border: none;  -fx-text-fill: #ffffff";
 
     //CENTRAL MENU (SCENE 1)
-    private VBox s1CentralMenu(){
+    private VBox s1CentralMenu() {
         Image menu1 = new Image("http://ontheworldmap.com/world/world-political-map-with-countries.jpg"); // change URL for actual img.
 
         //BACKGROUND SETTINGS
@@ -75,19 +64,19 @@ public class App extends Application {
 
         //VBOX CENTRAL MENU
         VBox vBoxMenu = new VBox();
-        buttonWorld = new Button("World");
-        buttonWorld.setOnAction(e ->{
+        Button buttonWorld = new Button("World");
+        buttonWorld.setOnAction(e -> {
             clickSound.play();
             window1.setScene(scene3);
         });
 
-        buttonSettings = new Button("Settings");
+        Button buttonSettings = new Button("Settings");
         buttonSettings.setOnAction(e -> {
             clickSound.play();
             window1.setScene(scene2);
         });
 
-        buttonExit = new Button("Exit");
+        Button buttonExit = new Button("Exit");
         buttonExit.setOnAction(e -> {
             clickSound.play();
             boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
@@ -103,23 +92,23 @@ public class App extends Application {
     }
 
     //CENTRAL MENU (SCENE 2)
-    private VBox s2CentralMenu(){
+    private VBox s2CentralMenu() {
 
         VBox vBoxSettings = new VBox();
 
-        buttonSetFS = new CheckBox("Full Screen");
+        CheckBox buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
-            window1.setFullScreen(((CheckBox)e.getSource()).isSelected());
+            window1.setFullScreen(((CheckBox) e.getSource()).isSelected());
             clickSound.play();
 
         });
 
-        label = new Label("Volume");
+        Label label = new Label("Volume");
 
-        buttonSetVol = new Slider(0,10,5);
-        buttonSetVol.setMaxSize(200,10);
+        Slider buttonSetVol = new Slider(0, 10, 5);
+        buttonSetVol.setMaxSize(200, 10);
 
-        buttonBack = new Button("BACK");
+        Button buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {
             window1.setScene(scene1);
             clickSound.play();
@@ -132,9 +121,9 @@ public class App extends Application {
     }
 
     //SIDE BAR IN WORLD (SCENE 3)
-    private VBox sidePane(){
+    private VBox sidePane() {
 
-        VBox vBoxBar = new VBox(){
+        VBox vBoxBar = new VBox() {
             @Override
             protected void updateBounds() {
                 super.updateBounds();
@@ -144,20 +133,20 @@ public class App extends Application {
             }
         };
 
-        mainMenu = new Button("App Menu"){
+        Button mainMenu = new Button("App Menu") {
             @Override
             protected void setHeight(double value) {
                 super.setWidth(100);
                 super.setHeight(40);
                 super.setOnMouseEntered(e -> super.setStyle(HOVERED_BUTTON_STYLE));
                 super.setOnMouseExited(e -> super.setStyle(IDLE_BUTTON_STYLE));
-                super.setOnAction(e ->{
+                super.setOnAction(e -> {
                     window1.setScene(scene1);
                     clickSound.play();
                 });
             }
         };
-        buttonExit2 = new Button("Exit"){
+        Button buttonExit2 = new Button("Exit") {
             @Override
             protected void setHeight(double value) {
                 super.setWidth(100);
@@ -166,7 +155,7 @@ public class App extends Application {
                 super.setOnMouseExited(e -> super.setStyle("-fx-background-color: transparent; -fx-text-fill: #ffffff"));
                 super.setOnAction(e -> {
                     boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
-                    if(result) {
+                    if (result) {
                         window1.close();
                         clickSound.play();
                     }
@@ -179,6 +168,18 @@ public class App extends Application {
         vBoxBar.getChildren().addAll(mainMenu, buttonExit2);
 
         return vBoxBar;
+    }
+
+    //PANE (SCENE 3)
+    private AnchorPane s3Pane() {
+        AnchorPane anchorPane = new AnchorPane();
+        BorderPane borderPane = new BorderPane();
+
+        anchorPane.getChildren().addAll(borderPane);
+        borderPane.setRight(sidePane());
+        borderPane.setPrefSize(996, 499);
+
+        return anchorPane;
     }
 
     public static void main(String[] args) {
