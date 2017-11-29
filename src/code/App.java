@@ -1,6 +1,8 @@
 package code;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -11,6 +13,10 @@ import javafx.scene.control.*;
 import resources.Sound;
 
 public class App extends Application {
+
+    //GUI Options
+    private boolean fullscreen = false;
+    private double volume = 5;
 
     //Persistent GUI controls
     private Stage window1;
@@ -105,8 +111,13 @@ public class App extends Application {
 
         Label label = new Label("Volume");
 
-        Slider buttonSetVol = new Slider(0, 10, 5);
+        Slider buttonSetVol = new Slider(0, 1, 1);
         buttonSetVol.setMaxSize(200, 10);
+
+        buttonSetVol.valueProperty().addListener((observable, oldValue, newValue) -> {
+            backgroundSound.setVolume(newValue.doubleValue());
+            clickSound.setVolume(newValue.doubleValue());
+        });
 
         Button buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {

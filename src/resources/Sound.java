@@ -15,4 +15,8 @@ public class Sound {
         mediaPlayer.stop();
         mediaPlayer.play();
     }
+
+    public void setVolume(double volume){
+        mediaPlayer.setVolume(volume);
+    }
 }
