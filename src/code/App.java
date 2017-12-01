@@ -16,7 +16,7 @@ public class App extends Application {
 
     //GUI Options
     private boolean fullscreen = false;
-    private double volume = 5;
+    private double volume = 1;
 
     //Persistent GUI controls
     private Stage window1;
@@ -115,8 +115,9 @@ public class App extends Application {
         buttonSetVol.setMaxSize(200, 10);
 
         buttonSetVol.valueProperty().addListener((observable, oldValue, newValue) -> {
-            backgroundSound.setVolume(newValue.doubleValue());
-            clickSound.setVolume(newValue.doubleValue());
+            volume = newValue.doubleValue();
+            backgroundSound.setVolume(volume);
+            clickSound.setVolume(volume);
         });
 
         Button buttonBack = new Button("BACK");
