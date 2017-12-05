@@ -1,8 +1,6 @@
 package code;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -11,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
+import java.io.*;
+import java.util.*;
+
 
 public class App extends Application {
 
@@ -29,13 +30,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        new Countries();
         //STAGE 1
         window1 = primaryStage;
         window1.setTitle("Journally");
         window1.setResizable(false);
 
         //SCENE1 (MAIN MENU)
-        scene1 = new Scene(s1CentralMenu(), 996, 499);
+        scene1 = new Scene(s1CentralMenu(), 1200, 499);
 
         //SCENE 2 (SETTINGS)
         scene2 = new Scene(s2CentralMenu(), 996, 499);
@@ -50,23 +52,13 @@ public class App extends Application {
         backgroundSound.play();
     }
 
-    //BUTTONS WORLD SIDE BAR STYLE
+    //BUTTON SETTINGS FOR "WORLD" SIDE BAR STYLE
     private static final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: #ffffff";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color:#4682b4; -fx-shadow-highlight-color: none;" +
-            "-fx-outer-border: none; -fx-inner-border: none;  -fx-text-fill: #ffffff";
+            "-fx-outer-border: none; -fx-inner-border: none;  -fx-text-fill: #ffffff; -fx-outer-CornerRadii: none";
 
     //CENTRAL MENU (SCENE 1)
     private VBox s1CentralMenu() {
-        Image menu1 = new Image("http://ontheworldmap.com/world/world-political-map-with-countries.jpg"); // change URL for actual img.
-
-        //BACKGROUND SETTINGS
-        BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
-                true, true, true, false);
-
-        BackgroundImage backgroundImage = new BackgroundImage(menu1, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
-
-        Background background = new Background(backgroundImage);
 
         //VBOX CENTRAL MENU
         VBox vBoxMenu = new VBox();
@@ -89,7 +81,7 @@ public class App extends Application {
             if (result) window1.close();
         });
 
-        vBoxMenu.setBackground(background);
+        vBoxMenu.setBackground(background());
         vBoxMenu.setSpacing(20);
         vBoxMenu.setAlignment(Pos.CENTER);
         vBoxMenu.getChildren().addAll(buttonWorld, buttonSettings, buttonExit);
@@ -174,10 +166,11 @@ public class App extends Application {
                 });
             }
         };
+
         buttonExit2.setStyle(IDLE_BUTTON_STYLE);
         mainMenu.setStyle(IDLE_BUTTON_STYLE);
         vBoxBar.setPrefWidth(100);
-        vBoxBar.getChildren().addAll(mainMenu, buttonExit2);
+        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, new AutoCompleteTextField());
 
         return vBoxBar;
     }
@@ -192,6 +185,23 @@ public class App extends Application {
         borderPane.setPrefSize(996, 499);
 
         return anchorPane;
+    }
+
+    //BACKGROUNDS
+    private Background background() {
+
+        Image image = new Image("http://ontheworldmap.com/world/world-political-map-with-countries.jpg"); // change URL for actual img.
+
+        //BACKGROUND SETTINGS
+        BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
+                true, true, true, false);
+
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, backgroundSize);
+
+        Background background = new Background(backgroundImage);
+
+        return background;
     }
 
     public static void main(String[] args) {
