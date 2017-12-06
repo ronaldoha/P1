@@ -2,6 +2,7 @@ package code;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,8 +10,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
-import java.io.*;
-import java.util.*;
+import javafx.scene.control.ScrollPane;
+
+import java.nio.file.Path;
+import java.util.Stack;
 
 
 public class App extends Application {
@@ -37,7 +40,7 @@ public class App extends Application {
         window1.setResizable(false);
 
         //SCENE1 (MAIN MENU)
-        scene1 = new Scene(s1CentralMenu(), 1200, 499);
+        scene1 = new Scene(s1CentralMenu(), 996, 499);
 
         //SCENE 2 (SETTINGS)
         scene2 = new Scene(s2CentralMenu(), 996, 499);
@@ -182,6 +185,7 @@ public class App extends Application {
 
         anchorPane.getChildren().addAll(borderPane);
         borderPane.setRight(sidePane());
+        borderPane.setLeft(world());
         borderPane.setPrefSize(996, 499);
 
         return anchorPane;
@@ -202,6 +206,34 @@ public class App extends Application {
         Background background = new Background(backgroundImage);
 
         return background;
+    }
+
+    //WORLD :DDDDD
+
+    private ScrollPane world(){
+
+        StackPane layout = new StackPane();
+        Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
+        Button spain = new Button("Spain");
+
+        ScrollPane scroll = createScrollPane(layout);
+
+
+        scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
+        scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+
+        layout.getChildren().setAll(new ImageView(backgroundImage), spain);
+
+        return scroll ;
+    }
+    private ScrollPane createScrollPane(Pane layout) {
+        ScrollPane scroll = new ScrollPane();
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setPannable(true);
+        scroll.setPrefSize(896, 499);
+        scroll.setContent(layout);
+        return scroll;
     }
 
     public static void main(String[] args) {
