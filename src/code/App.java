@@ -13,10 +13,13 @@ import resources.Sound;
 import javafx.scene.control.ScrollPane;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Stack;
 
 
 public class App extends Application {
+    public static ArrayList<String> countryNameList = new ArrayList<>();
+    public static ArrayList<Country> countryList = new ArrayList<>();
 
     //GUI Options
     private boolean fullscreen = false;
@@ -33,7 +36,10 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        new Countries();
+        Parser parser = new Parser();
+        countryList = parser.getObjects();
+        countryNameList = parser.getNames();
+
         //STAGE 1
         window1 = primaryStage;
         window1.setTitle("Journally");

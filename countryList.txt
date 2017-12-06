@@ -1,0 +1,4 @@
+USA;0;0
+Denmark;1;1
+Poland;2;2
+Romania;3;3

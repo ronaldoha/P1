@@ -15,12 +15,13 @@ public class AutoCompleteTextField extends TextField
     private ContextMenu entriesPopup;
 
     /** Construct a new AutoCompleteTextField. */
-    public AutoCompleteTextField() {
+    AutoCompleteTextField() {
         super();
         super.setPromptText("Countries");
         entries = new TreeSet<>();
-        entries.addAll(Arrays.asList("Spain","Mordor"));
+        entries.addAll(App.countryNameList);
         entriesPopup = new ContextMenu();
+
         textProperty().addListener((observableValue, s, s2) -> {
             if (getText().length() == 0)
             {
