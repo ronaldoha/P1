@@ -1,23 +1,25 @@
 package code;
 
-public class Country {
+class Country {
     private String name;
-    private double x;
-    private double y;
+    private int x;
+    private int y;
 
-    Country(String name){
+    Country(String name, int x, int y){
         this.name = name;
+        this.x = x;
+        this.y = y;
     }
 
-    public String getName(){
+    String getName(){
         return name;
     }
 
-    public double getY(){
+    double getY(){
         return y;
     }
 
-    public double getX(){
+    double getX(){
         return x;
     }
 }
