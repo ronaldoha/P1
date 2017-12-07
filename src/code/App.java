@@ -18,6 +18,8 @@ import java.util.Stack;
 
 
 public class App extends Application {
+
+    /** Country lists, complete it with "array" or "nume" */
     public static ArrayList<String> countryNameList = new ArrayList<>();
     public static ArrayList<Country> countryList = new ArrayList<>();
 
@@ -223,7 +225,6 @@ public class App extends Application {
         Button spain = new Button("Spain");
 
         ScrollPane scroll = createScrollPane(layout);
-
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
         scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
