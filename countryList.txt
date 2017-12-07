@@ -1,4 +1,29 @@
-USA;0;0
-Denmark;1;1
-Poland;2;2
-Romania;3;3
+Denmark;446;458
+Poland;594;552
+Romania;716;704
+Spain;166;848
+Austria;508;688
+Italy;498;832
+Belgium;340;560
+Latvia;660;410
+Bulgaria;747;790
+Lithuania;653;454
+Croatia;540;757
+Luxembourg;367;724
+Cyprus;957;948
+Malta;536;1002
+Czech Republic;530;626
+Netherlands;359;560
+Estonia;660;358
+Portugal;56;861
+Finland;636;202
+Romania;721;708
+France;293;710
+Slovakia;613;645
+Germany;441;600
+Slovenia;530;724
+Greece;706;890
+Hungary;614;690
+Sweden;511;275
+Ireland;145;500
+United Kingdom;240;480
