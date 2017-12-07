@@ -2,29 +2,3 @@ USA;0;0
 Denmark;1;1
 Poland;2;2
 Romania;3;3
-Spain;
-Austria;
-Italy;
-Belgium;
-Latvia;
-Bulgaria;
-Lithuania;
-Croatia;
-Luxembourg;
-Cyprus;
-Malta;
-Czech Republic;
-Netherlands;
-Estonia;
-Portugal;
-Finland;
-Romania;
-France;
-Slovakia;
-Germany;
-Slovenia;
-Greece;
-Hungary;
-Sweden;
-Ireland;
-United Kingdom;
