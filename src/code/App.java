@@ -19,9 +19,7 @@ import java.util.Stack;
 
 public class App extends Application {
 
-    /**
-     * Country lists, complete it with "array" or "nume"
-     */
+    /** Country lists, complete it with "array" or "nume" */
     public static ArrayList<String> countryNameList = new ArrayList<>();
     public static ArrayList<Country> countryList = new ArrayList<>();
 
@@ -183,17 +181,7 @@ public class App extends Application {
         buttonExit2.setStyle(IDLE_BUTTON_STYLE);
         mainMenu.setStyle(IDLE_BUTTON_STYLE);
         vBoxBar.setPrefWidth(100);
-        AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
-        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, autoCompleteTextField);
-        autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            int id = countryNameList.indexOf(newValue);
-            if (id > -1) {
-                Country country = countryList.get(id);
-                System.out.println(country.getName() + ": " + country.getX() + " | " + country.getY());
-
-                // ZOOM IN CODE GOES HERE
-            }
-        });
+        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, new AutoCompleteTextField());
 
         return vBoxBar;
     }
@@ -230,21 +218,21 @@ public class App extends Application {
 
     //WORLD :DDDDD
 
-    private ScrollPane world() {
+    private ScrollPane world(){
 
         StackPane layout = new StackPane();
         Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
+        Button spain = new Button("Spain");
 
         ScrollPane scroll = createScrollPane(layout);
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
         scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
-        layout.getChildren().setAll(new ImageView(backgroundImage));
+        layout.getChildren().setAll(new ImageView(backgroundImage), spain);
 
-        return scroll;
+        return scroll ;
     }
-
     private ScrollPane createScrollPane(Pane layout) {
         ScrollPane scroll = new ScrollPane();
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

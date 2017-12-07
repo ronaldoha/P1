@@ -11,15 +11,15 @@ class Parser {
     private ArrayList<String> countryNameList = new ArrayList<>();
     private String path = "CountryList.txt";
 
-    Parser() {
+    Parser(){
         File file = new File(path);
         try {
             Scanner scanner = new Scanner(file);
 
-            while (scanner.hasNextLine()) {
+            while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
-                Country country = new Country(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
+                Country country = new Country(values[0]);
                 countryList.add(country);
                 countryNameList.add(country.getName());
             }
@@ -28,11 +28,11 @@ class Parser {
         }
     }
 
-    ArrayList getObjects() {
-        return countryList;
+    ArrayList getObjects(){
+       return countryList;
     }
 
-    ArrayList getNames() {
+    ArrayList getNames(){
         return countryNameList;
     }
 

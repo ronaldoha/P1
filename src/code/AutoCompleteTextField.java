@@ -71,11 +71,11 @@ public class AutoCompleteTextField extends TextField
                 setText(result);
                 positionCaret(result.length());
                 entriesPopup.hide();
+                System.out.println();
             });
             menuItems.add(item);
         }
         entriesPopup.getItems().clear();
         entriesPopup.getItems().addAll(menuItems);
-
     }
 }
