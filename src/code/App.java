@@ -79,12 +79,14 @@ public class App extends Application {
         buttonWorld.setOnAction(e -> {
             clickSound.play();
             window1.setScene(scene3);
+            window1.setFullScreen(fullscreen);
         });
 
         Button buttonSettings = new Button("Settings");
         buttonSettings.setOnAction(e -> {
             clickSound.play();
             window1.setScene(scene2);
+            window1.setFullScreen(fullscreen);
         });
 
         Button buttonExit = new Button("Exit");
@@ -109,7 +111,8 @@ public class App extends Application {
 
         CheckBox buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
-            window1.setFullScreen(((CheckBox) e.getSource()).isSelected());
+            fullscreen = ((CheckBox) e.getSource()).isSelected();
+            window1.setFullScreen(fullscreen);
             clickSound.play();
 
         });
@@ -128,6 +131,7 @@ public class App extends Application {
         Button buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {
             window1.setScene(scene1);
+            window1.setFullScreen(fullscreen);
             clickSound.play();
         });
 
@@ -159,6 +163,7 @@ public class App extends Application {
                 super.setOnMouseExited(e -> super.setStyle(IDLE_BUTTON_STYLE));
                 super.setOnAction(e -> {
                     window1.setScene(scene1);
+                    window1.setFullScreen(fullscreen);
                     clickSound.play();
                 });
             }
