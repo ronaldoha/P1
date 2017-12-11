@@ -186,12 +186,16 @@ public class App extends Application {
                 });
             }
         };
+        Image image = new Image(App.class.getResource("/resources/Logo.png").toExternalForm());
+        ImageView imageView= new ImageView(image);
 
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
         buttonExit2.setStyle(IDLE_BUTTON_STYLE);
         mainMenu.setStyle(IDLE_BUTTON_STYLE);
         vBoxBar.setPrefWidth(100);
         AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
-        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, autoCompleteTextField);
+        vBoxBar.getChildren().addAll(imageView, mainMenu, buttonExit2, autoCompleteTextField);
 
         autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             int id = countryNameList.indexOf(newValue);
