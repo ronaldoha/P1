@@ -19,7 +19,7 @@ class Parser {
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
-                Country country = new Country(values[0]);
+                Country country = new Country(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
                 countryList.add(country);
                 countryNameList.add(country.getName());
             }

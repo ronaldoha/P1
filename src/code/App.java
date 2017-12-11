@@ -1,8 +1,13 @@
 package code;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,15 +16,14 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
 import javafx.scene.control.ScrollPane;
-
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Stack;
 
 
 public class App extends Application {
-
-    /** Country lists, complete it with "array" or "nume" */
+    Group zoomGroup;
+    Scale scaleTransform;
+    Node content;
+   //COUNTRY ENTRIES
     public static ArrayList<String> countryNameList = new ArrayList<>();
     public static ArrayList<Country> countryList = new ArrayList<>();
 
@@ -48,13 +52,13 @@ public class App extends Application {
         window1.setResizable(false);
 
         //SCENE1 (MAIN MENU)
-        scene1 = new Scene(s1CentralMenu(), 996, 499);
+        scene1 = new Scene(s1CentralMenu(), 800, 466);
 
         //SCENE 2 (SETTINGS)
-        scene2 = new Scene(s2CentralMenu(), 996, 499);
+        scene2 = new Scene(s2CentralMenu(), 800, 466);
 
         //SCENE3 (WORLD)
-        scene3 = new Scene(s3Pane(), 996, 499);
+        scene3 = new Scene(s3Pane(), 800, 466);
 
         //STAGE 1 INITIAL SETTINGS
         window1.setScene(scene1);
@@ -186,7 +190,18 @@ public class App extends Application {
         buttonExit2.setStyle(IDLE_BUTTON_STYLE);
         mainMenu.setStyle(IDLE_BUTTON_STYLE);
         vBoxBar.setPrefWidth(100);
-        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, new AutoCompleteTextField());
+        AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
+        vBoxBar.getChildren().addAll(mainMenu, buttonExit2, autoCompleteTextField);
+
+        autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            int id = countryNameList.indexOf(newValue);
+            if (id > -1) {
+                Country country = countryList.get(id);
+                System.out.println(country.getName() + ": " + country.getX() + " | " + country.getY());
+
+                // ZOOM IN CODE GOES HERE
+            }
+        });
 
         return vBoxBar;
     }
@@ -199,7 +214,7 @@ public class App extends Application {
         anchorPane.getChildren().addAll(borderPane);
         borderPane.setRight(sidePane());
         borderPane.setLeft(world());
-        borderPane.setPrefSize(996, 499);
+        borderPane.setPrefSize(800, 466);
 
         return anchorPane;
     }
@@ -207,7 +222,7 @@ public class App extends Application {
     //BACKGROUNDS
     private Background background() {
 
-        Image image = new Image("http://ontheworldmap.com/world/world-political-map-with-countries.jpg"); // change URL for actual img.
+        Image image = new Image(App.class.getResource("/resources/Back.jpg").toExternalForm()); // change URL for actual img.
 
         //BACKGROUND SETTINGS
         BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
@@ -223,28 +238,43 @@ public class App extends Application {
 
     //WORLD :DDDDD
 
-    private ScrollPane world(){
+    private ScrollPane world() {
 
         StackPane layout = new StackPane();
+
         Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
-        Button spain = new Button("Spain");
 
         ScrollPane scroll = createScrollPane(layout);
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
         scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
-        layout.getChildren().setAll(new ImageView(backgroundImage), spain);
+        layout.getChildren().setAll(new ImageView(backgroundImage));
 
-        return scroll ;
+        return scroll;
     }
+
     private ScrollPane createScrollPane(Pane layout) {
+
         ScrollPane scroll = new ScrollPane();
-        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setPannable(true);
-        scroll.setPrefSize(896, 499);
+        scroll.setPrefSize(700, 466);
         scroll.setContent(layout);
+
+        return scroll;
+    }
+    private ScrollPane zoomableScrollPane(Node content) {
+
+        ScrollPane scroll = new ScrollPane();
+        this.content = content;
+        Group contentGroup = new Group();
+        zoomGroup = new Group();
+        contentGroup.getChildren().add(zoomGroup);
+        zoomGroup.getChildren().add(content);
+        scroll.setContent(contentGroup);
+        scaleTransform = new Scale(1, 1, 0, 0);
+        zoomGroup.getTransforms().add(scaleTransform);
+
         return scroll;
     }
 
