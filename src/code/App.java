@@ -248,7 +248,7 @@ public class App extends Application {
 
         Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
 
-        ScrollPane scroll = createScrollPane(layout);
+        ScrollPane scroll = zoomableScrollPane(layout);
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
         scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
@@ -258,19 +258,11 @@ public class App extends Application {
         return scroll;
     }
 
-    private ScrollPane createScrollPane(Pane layout) {
+    public ScrollPane zoomableScrollPane(Node content) {
 
         ScrollPane scroll = new ScrollPane();
-        scroll.setPannable(true);
         scroll.setPrefSize(700, 466);
-        scroll.setContent(layout);
-
-        return scroll;
-    }
-    private ScrollPane zoomableScrollPane(Node content) {
-
-        ScrollPane scroll = new ScrollPane();
-        this.content = content;
+        scroll.setPannable(true);
         Group contentGroup = new Group();
         zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
