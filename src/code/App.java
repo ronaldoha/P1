@@ -1,12 +1,14 @@
 package code;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -20,9 +22,10 @@ import java.util.ArrayList;
 
 
 public class App extends Application {
+
     Group zoomGroup;
-    Scale scaleTransform;
     Node content;
+
    //COUNTRY ENTRIES
     public static ArrayList<String> countryNameList = new ArrayList<>();
     public static ArrayList<Country> countryList = new ArrayList<>();
@@ -155,7 +158,6 @@ public class App extends Application {
                 super.setAlignment(Pos.TOP_CENTER);
             }
         };
-
         Button mainMenu = new Button("App Menu") {
             @Override
             protected void setHeight(double value) {
@@ -191,9 +193,12 @@ public class App extends Application {
 
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
+
         buttonExit2.setStyle(IDLE_BUTTON_STYLE);
         mainMenu.setStyle(IDLE_BUTTON_STYLE);
+
         vBoxBar.setPrefWidth(100);
+
         AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
         vBoxBar.getChildren().addAll(imageView, mainMenu, buttonExit2, autoCompleteTextField);
 
@@ -202,8 +207,6 @@ public class App extends Application {
             if (id > -1) {
                 Country country = countryList.get(id);
                 System.out.println(country.getName() + ": " + country.getX() + " | " + country.getY());
-
-                // ZOOM IN CODE GOES HERE
             }
         });
 
@@ -240,36 +243,59 @@ public class App extends Application {
         return background;
     }
 
-    //WORLD :DDDDD
+    //WORLD MAP
 
     private ScrollPane world() {
 
-        StackPane layout = new StackPane();
-
+        AnchorPane layout = new AnchorPane();
         Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
+
+        layout.setOnMouseClicked(e ->{
+            if(e.getButton() == MouseButton.PRIMARY) {
+
+                if(e.getClickCount() == 2) {
+                    layout.getChildren().addAll(new Pins());
+                }
+            }
+
+         });
+
+        layout.getChildren().setAll(new ImageView(backgroundImage));
 
         ScrollPane scroll = zoomableScrollPane(layout);
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
         scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
-        layout.getChildren().setAll(new ImageView(backgroundImage));
-
         return scroll;
     }
 
-    public ScrollPane zoomableScrollPane(Node content) {
+    private ScrollPane zoomableScrollPane(Node content) {
+
+        final double SCALE_DELTA = 1.1;
+
+        Group contentGroup = new Group();
+        zoomGroup = new Group();
+        contentGroup.getChildren().add(zoomGroup);
 
         ScrollPane scroll = new ScrollPane();
         scroll.setPrefSize(700, 466);
         scroll.setPannable(true);
-        Group contentGroup = new Group();
-        zoomGroup = new Group();
-        contentGroup.getChildren().add(zoomGroup);
-        zoomGroup.getChildren().add(content);
         scroll.setContent(contentGroup);
-        scaleTransform = new Scale(1, 1, 0, 0);
-        zoomGroup.getTransforms().add(scaleTransform);
+
+
+        content.setOnScroll( (ScrollEvent event) -> {
+            event.consume();
+            if (event.getDeltaY() == 0) {
+                return;
+            }
+            double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+            content.setScaleX(content.getScaleX() * scaleFactor);
+            content.setScaleY(content.getScaleY() * scaleFactor);
+        });
+
+        zoomGroup.getChildren().add(content);
 
         return scroll;
     }
