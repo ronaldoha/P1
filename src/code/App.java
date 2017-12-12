@@ -1,15 +1,12 @@
 package code;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.ZoomEvent;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

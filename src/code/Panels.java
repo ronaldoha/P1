@@ -30,7 +30,5 @@ class Panels extends AnchorPane {
             posX = getLayoutX();
             posY = getLayoutY();
         });
-
-
     }
 }
