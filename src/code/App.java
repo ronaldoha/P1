@@ -1,12 +1,15 @@
 package code;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,10 +18,22 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
 import javafx.scene.control.ScrollPane;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class App extends Application {
+
+    // USER INTERFACE controls
+    private static List<String> list = new ArrayList<>();
+    private static Map<String, String> map = new HashMap<String, String>();
+    private User db = new User();
+
+    //zoom
 
     Group zoomGroup;
     Node content;
@@ -32,8 +47,8 @@ public class App extends Application {
     private double volume = 1;
 
     //Persistent GUI controls
-    private Stage window1;
-    private Scene scene1, scene2, scene3;
+    private Stage window1, loginWindow;
+    private Scene scene1, scene2, scene3, sceneLogin, sceneLogin1;
 
     //Sound controls
     private Sound clickSound = new Sound("ClickSound.wav");
@@ -51,6 +66,12 @@ public class App extends Application {
         window1.setTitle("Journally");
         window1.setResizable(false);
 
+        //STAGE LOGIN
+
+        loginWindow = new Stage();
+        loginWindow.setTitle("Log in");
+        loginWindow.setResizable(false);
+
         //SCENE1 (MAIN MENU)
         scene1 = new Scene(s1CentralMenu(), 800, 466);
 
@@ -60,9 +81,22 @@ public class App extends Application {
         //SCENE3 (WORLD)
         scene3 = new Scene(s3Pane(), 800, 466);
 
+        //SCENE LOGIN
+        sceneLogin1 = new Scene(display1());
+        //SCENE LOGIN 1
+        sceneLogin = new Scene(display2(), 700, 500);
+
         //STAGE 1 INITIAL SETTINGS
         window1.setScene(scene1);
         window1.show();
+
+        //Stage login
+        loginWindow.setScene(sceneLogin);
+        loginWindow.initModality(Modality.APPLICATION_MODAL);
+        loginWindow.setMinHeight(700);
+        loginWindow.setMinWidth(500);
+        Label label = new Label();
+        label.setText("message");
 
         backgroundSound.play();
     }
@@ -98,10 +132,14 @@ public class App extends Application {
             if (result) window1.close();
         });
 
+        Button users = new Button("User");
+        users.setOnAction(e-> {
+            loginWindow.show();
+        });
         vBoxMenu.setBackground(background());
         vBoxMenu.setSpacing(20);
         vBoxMenu.setAlignment(Pos.CENTER);
-        vBoxMenu.getChildren().addAll(buttonWorld, buttonSettings, buttonExit);
+        vBoxMenu.getChildren().addAll(buttonWorld, buttonSettings, buttonExit,users);
 
         return vBoxMenu;
     }
@@ -135,6 +173,11 @@ public class App extends Application {
             window1.setScene(scene1);
             window1.setFullScreen(fullscreen);
             clickSound.play();
+        });
+
+        Button user = new Button("Users");
+        user.setOnAction(e->{
+            loginWindow.show();
         });
 
         vBoxSettings.setSpacing(20);
@@ -293,6 +336,142 @@ public class App extends Application {
         zoomGroup.getChildren().add(content);
 
         return scroll;
+    }
+
+    /** USER INTERFACE */
+
+    private GridPane display2() {
+
+        int integer = 0;
+
+        String FileName = "Users.txt";
+
+        // grid creation
+
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25,25,25,25));
+
+        // Adding labels and text fields to the grid
+        Label userName = new Label("User Name: ");
+        grid.add(userName, 0, 1);
+
+        TextField userTextField = new TextField();
+        grid.add(userTextField, 1,1);
+
+        Label pw = new Label("Password: ");
+        grid.add(pw, 0, 2);
+
+        PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
+
+        // Buttons
+        Button buttonNewUser = new Button("New User");
+        Button buttonLogIn = new Button("Log in");
+        HBox hbButton = new HBox(10);
+        hbButton.setAlignment(Pos.BOTTOM_RIGHT);
+        hbButton.getChildren().addAll(buttonNewUser, buttonLogIn);
+        grid.add(hbButton, 1, 4);
+
+        // Add alert text
+        Text alertText = new Text();
+        grid.add(alertText, 1,6);
+
+        // Adding code to buttons
+        buttonNewUser.setOnAction(e -> {
+            loginWindow.setScene(sceneLogin1);
+        });
+
+        buttonLogIn.setOnAction(e -> {
+            // Read object
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(FileName))){
+                boolean a = false;
+                for (int i = 0; i < list.size(); i++)
+                {
+                    if (userTextField.getText().equals(db.getMap().get(i)) || pwBox.getText().equals(db.getMap().get(i)))
+                    {
+                        db = (User) objectInputStream.readObject();
+                        a = true;
+                    }
+                    if (a == true)
+                    {
+                        break;
+                    }
+                }
+                if (a == false)
+                {
+                    Label label2 = new Label("The password or username is incorrect");
+                    grid.add(label2, 1, 1);
+                }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            System.out.println(db.getList());
+        });
+        return grid;
+    }
+
+
+    private GridPane display1() {
+        String FileName = "Users.txt";
+
+        // grid creation
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        //Button
+        Button buttonSignIn = new Button("Sign in");
+        HBox hbButton = new HBox(10);
+        hbButton.setAlignment(Pos.BOTTOM_RIGHT);
+        hbButton.getChildren().addAll(buttonSignIn);
+        grid.add(hbButton, 1, 4);
+
+        // Adding labels and text fields to the grid
+        Label userName = new Label("User Name: ");
+        grid.add(userName, 0, 1);
+
+        TextField userTextField = new TextField();
+        grid.add(userTextField, 1, 1);
+
+        Label pw = new Label("Password: ");
+        grid.add(pw, 0, 2);
+
+        PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
+
+        Label pwagain = new Label("Repeat Password: ");
+        grid.add(pwagain, 0, 3);
+
+        PasswordField pwBoxagain = new PasswordField();
+        grid.add(pwBoxagain, 1, 3);
+
+        buttonSignIn.setOnAction(e -> {
+            if (pwBox.getText().equals(pwagain.getText())) {
+                list.add(userTextField.getText());
+                map.put(pwBox.getText(), userTextField.getText());
+                db.setList(list);
+                db.setMap(map);
+                try {
+                    // Save object
+                    try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(FileName))) {
+                        objectOutputStream.writeObject(db);
+                    }
+                    db = null;
+
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        return grid;
     }
 
     public static void main(String[] args) {
