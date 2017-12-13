@@ -7,12 +7,10 @@ import java.util.Scanner;
 
 class Parser {
 
-    private ArrayList<Country> countryList = new ArrayList<>();
-    private ArrayList<String> countryNameList = new ArrayList<>();
-    private String path = "CountryList.txt";
-
-    Parser(){
-        File file = new File(path);
+    void parseCountries(){
+        File file = new File("CountryList.txt");
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<Country> objectList = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
 
@@ -20,20 +18,34 @@ class Parser {
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
                 Country country = new Country(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
-                countryList.add(country);
-                countryNameList.add(country.getName());
+                objectList.add(country);
+                nameList.add(country.getName());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        App.countryNameList = nameList;
+        App.countryList = objectList;
     }
 
-    ArrayList getObjects(){
-       return countryList;
-    }
+    void parseUsers(){
+        File file = new File("UserList.txt");
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<User> objectList = new ArrayList<>();
+        try {
+            Scanner scanner = new Scanner(file);
 
-    ArrayList getNames(){
-        return countryNameList;
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                String[] values = line.split(";");
+                User user = new User(values[0], values[1]);
+                objectList.add(user);
+                nameList.add(user.getUsername());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        App.userNameList = nameList;
+        App.userList = objectList;
     }
-
 }

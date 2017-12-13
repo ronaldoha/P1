@@ -20,10 +20,10 @@ import resources.Sound;
 import javafx.scene.control.ScrollPane;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 
 public class App extends Application {
@@ -31,16 +31,20 @@ public class App extends Application {
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
     private static Map<String, String> map = new HashMap<String, String>();
-    private User db = new User();
-
     //zoom
 
     Group zoomGroup;
     Node content;
 
    //COUNTRY ENTRIES
-    public static ArrayList<String> countryNameList = new ArrayList<>();
-    public static ArrayList<Country> countryList = new ArrayList<>();
+    static ArrayList<String> countryNameList = new ArrayList<>();
+    static ArrayList<Country> countryList = new ArrayList<>();
+
+    static ArrayList<String> userNameList = new ArrayList<>();
+    static ArrayList<User> userList = new ArrayList<>();
+
+    Parser countryParser = new Parser();
+    Parser userParser = new Parser();
 
     //GUI Options
     private boolean fullscreen = false;
@@ -57,9 +61,9 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Parser parser = new Parser();
-        countryList = parser.getObjects();
-        countryNameList = parser.getNames();
+
+        countryParser.parseCountries();
+        userParser.parseUsers();
 
         //STAGE 1
         window1 = primaryStage;
@@ -339,13 +343,7 @@ public class App extends Application {
     }
 
     /** USER INTERFACE */
-
     private GridPane display2() {
-
-        int integer = 0;
-
-        String FileName = "Users.txt";
-
         // grid creation
 
         GridPane grid = new GridPane();
@@ -385,41 +383,25 @@ public class App extends Application {
         });
 
         buttonLogIn.setOnAction(e -> {
-            // Read object
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(FileName))){
-                boolean a = false;
-                for (int i = 0; i < list.size(); i++)
-                {
-                    if (userTextField.getText().equals(db.getMap().get(i)) || pwBox.getText().equals(db.getMap().get(i)))
-                    {
-                        db = (User) objectInputStream.readObject();
-                        a = true;
-                    }
-                    if (a == true)
-                    {
-                        break;
-                    }
-                }
-                if (a == false)
-                {
-                    Label label2 = new Label("The password or username is incorrect");
-                    grid.add(label2, 1, 1);
-                }
+            String username = userTextField.getText();
+            String password = pwBox.getText();
 
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
+            int index = userNameList.indexOf(username);
+            if(index > -1){
+                User user = userList.get(index);
+                if(Objects.equals(user.getPassword(), password)){
+                    System.out.println("Logged in");
+                }else {
+                    System.out.println("Not logged in");
+                }
+            }else{
+                System.out.println("Not logged in");
             }
-            System.out.println(db.getList());
         });
         return grid;
     }
 
-
     private GridPane display1() {
-        String FileName = "Users.txt";
-
         // grid creation
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -454,21 +436,31 @@ public class App extends Application {
         grid.add(pwBoxagain, 1, 3);
 
         buttonSignIn.setOnAction(e -> {
-            if (pwBox.getText().equals(pwagain.getText())) {
-                list.add(userTextField.getText());
-                map.put(pwBox.getText(), userTextField.getText());
-                db.setList(list);
-                db.setMap(map);
-                try {
-                    // Save object
-                    try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(FileName))) {
-                        objectOutputStream.writeObject(db);
+            String passwordOne = pwBox.getText();
+            pwBox.setText("");
+            String passwordTwo = pwBoxagain.getText();
+            pwBoxagain.setText("");
+            String username = userTextField.getText();
+            userTextField.setText("");
+            System.out.println(userNameList.indexOf(username));
+            if (userNameList.indexOf(username)==-1){
+                if (passwordOne.equals(passwordTwo)) {
+                    ArrayList rawData = new ArrayList();
+                    for (User user : userList) {
+                        rawData.add(user.getUsername() + ";" + user.getPassword());
                     }
-                    db = null;
-
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                    rawData.add(username + ";" + passwordOne);
+                    try {
+                        Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8"));
+                        System.out.println("User created");
+                        userParser.parseUsers();
+                        loginWindow.setScene(sceneLogin);
+                    } catch (IOException e1) {
+                        System.out.println("File not found");
+                    }
                 }
+            }else{
+                System.out.println("Username exists");
             }
         });
         return grid;

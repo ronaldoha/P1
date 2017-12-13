@@ -6,25 +6,19 @@ import java.util.Map;
 
 public class User implements Serializable
 {
-    private static final long serialVersionUID = 5864896800675704551L;
-    private List<String> list;
-    private Map<String, String> map;
+    private String username;
+    private String password;
 
-    public List<String> getList()
-    {
-        return list;
-    }
-    public void setList(List<String> list)
-    {
-        this.list = list;
-    }
-    public Map<String, String> getMap()
-    {
-        return map;
+    User(String username, String password){
+        this.username = username;
+        this.password = password;
     }
 
-    public void setMap(Map<String, String> map)
-    {
-        this.map = map;
+    public String getUsername(){
+        return this.username;
+    }
+
+    public String getPassword(){
+        return this.password;
     }
 }
