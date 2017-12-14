@@ -48,4 +48,6 @@ class Parser {
         App.userNameList = nameList;
         App.userList = objectList;
     }
+
+
 }

@@ -1,12 +1,12 @@
 package code;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 
 public final class Preferences {
 
     Preferences preferences = new Preferences();
-    File configuration = new File("UserSettings/config");
     FileOutputStream fos;
 
 

@@ -29,6 +29,8 @@ import java.util.*;
 
 public class App extends Application {
 
+    Properties configFile;
+
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
     private static Map<String, String> map = new HashMap<String, String>();
@@ -385,29 +387,54 @@ public class App extends Application {
             loginWindow.setScene(sceneSignIn);
         });
 
+
         buttonLogIn.setOnAction(e -> {
             String username = userTextField.getText();
             String password = pwBox.getText();
 
+            configFile = new Properties();
+
             int index = userNameList.indexOf(username);
             if(index > -1){
+
                 User user = userList.get(index);
+
                 if(Objects.equals(user.getPassword(), password)){
+
                     System.out.println("Logged in");
                     loginWindow.close();
+
                 }else {
                     System.out.println("Not logged in");
                 }
+
+                if (configFile == null){
+                    throw new IllegalArgumentException( "No settings loaded" );
+
+                }else {
+
+                    try {
+                        configFile.load(this.getClass().getClassLoader().getResourceAsStream("users/" + username + "null.cfg"));
+
+                    } catch (Exception eta) {
+
+                        System.out.println("User " + username + " settings loaded");
+                        eta.printStackTrace();
+                    }
+                }
+
             }else{
                 System.out.println("Not logged in");
             }
+
+
         });
         return grid;
     }
 
     //SCENE SIGN IN
 
-    private GridPane signIn() {
+    public GridPane signIn() {
 
         // grid creation
         GridPane grid = new GridPane();
@@ -452,25 +479,35 @@ public class App extends Application {
 
             if (userNameList.indexOf(username)==-1){
                 if (passwordOne.equals(passwordTwo)) {
+
                     ArrayList rawData = new ArrayList();
                     for (User user : userList) {
+
                         rawData.add(user.getUsername() + ";" + user.getPassword());
+
                     }
+
                     rawData.add(username + ";" + passwordOne);
                     String fileName = username;
+
                     try {
+
                         Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8"));
+
                         System.out.println("User created");
-                        Files.write(Paths.get("users/"+fileName+".txt"), new ArrayList<>(), Charset.forName("UTF-8"));
+
+                        Files.write(Paths.get("users/"+ fileName +"null.cfg"), new ArrayList<>(), Charset.forName("UTF-8"));
 
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
                         window1.show();
                         System.out.println(userNameList.indexOf(username)+1);
+
                     } catch (IOException e1) {
                         System.out.println("File not found");
                     }
                 }
+
             }else{
                 System.out.println("Username exists");
             }
