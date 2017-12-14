@@ -496,7 +496,7 @@ public class App extends Application {
 
                         System.out.println("User created");
 
-                        Files.write(Paths.get("users/"+ fileName +"null.cfg"), new ArrayList<>(), Charset.forName("UTF-8"));
+                        Files.write(Paths.get("users/"+ fileName +".cfg"), new ArrayList<>(), Charset.forName("UTF-8"));
 
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
