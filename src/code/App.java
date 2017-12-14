@@ -453,22 +453,15 @@ public class App extends Application {
             if (userNameList.indexOf(username)==-1){
                 if (passwordOne.equals(passwordTwo)) {
                     ArrayList rawData = new ArrayList();
-                    ArrayList fileName = new ArrayList();
                     for (User user : userList) {
                         rawData.add(user.getUsername() + ";" + user.getPassword());
-                        fileName.add(user.getUsername());
                     }
                     rawData.add(username + ";" + passwordOne);
-                    fileName.add(username);
+                    String fileName = username;
                     try {
                         Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8"));
                         System.out.println("User created");
-
-                        /** HERE */
-
-                        new File("/configurations/" + fileName + ".properties");
-
-                        /** HERE*/
+                        Files.write(Paths.get("users/"+fileName+".txt"), new ArrayList<>(), Charset.forName("UTF-8"));
 
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
