@@ -21,6 +21,7 @@ import resources.Sound;
 import javafx.scene.control.ScrollPane;
 
 import java.io.*;
+import java.lang.ref.Reference;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -87,9 +88,9 @@ public class App extends Application {
         scene3 = new Scene(s3Pane(), 800, 466);
 
         //SCENE LOGIN
-        sceneSignIn = new Scene(display1());
+        sceneSignIn = new Scene(signIn());
         //SCENE LOGIN 1
-        sceneLogin = new Scene(display2(), 700, 500);
+        sceneLogin = new Scene(logIn(), 700, 500);
 
         //STAGE 1 INITIAL SETTINGS
         window1.show();
@@ -347,7 +348,7 @@ public class App extends Application {
 
     //SCENE LOG IN
 
-    private GridPane display2() {
+    private GridPane logIn() {
         // grid creation
 
         GridPane grid = new GridPane();
@@ -408,7 +409,7 @@ public class App extends Application {
 
     //SCENE SIGN IN
 
-    private GridPane display1() {
+    private GridPane signIn() {
 
         // grid creation
         GridPane grid = new GridPane();
@@ -474,6 +475,7 @@ public class App extends Application {
         });
         return grid;
     }
+
 
     public static void main(String[] args) {
         launch(args);
