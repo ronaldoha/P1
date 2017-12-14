@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -31,15 +32,16 @@ public class App extends Application {
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
     private static Map<String, String> map = new HashMap<String, String>();
-    //zoom
 
+    //ZOOM
     Group zoomGroup;
     Node content;
 
-   //COUNTRY ENTRIES
+    //COUNTRY ENTRIES
     static ArrayList<String> countryNameList = new ArrayList<>();
     static ArrayList<Country> countryList = new ArrayList<>();
 
+    //USERS
     static ArrayList<String> userNameList = new ArrayList<>();
     static ArrayList<User> userList = new ArrayList<>();
 
@@ -52,7 +54,7 @@ public class App extends Application {
 
     //Persistent GUI controls
     private Stage window1, loginWindow;
-    private Scene scene1, scene2, scene3, sceneLogin, sceneLogin1;
+    private Scene scene1, scene2, scene3, sceneLogin, sceneSignIn;
 
     //Sound controls
     private Sound clickSound = new Sound("ClickSound.wav");
@@ -71,7 +73,6 @@ public class App extends Application {
         window1.setResizable(false);
 
         //STAGE LOGIN
-
         loginWindow = new Stage();
         loginWindow.setTitle("Log in");
         loginWindow.setResizable(false);
@@ -86,18 +87,18 @@ public class App extends Application {
         scene3 = new Scene(s3Pane(), 800, 466);
 
         //SCENE LOGIN
-        sceneLogin1 = new Scene(display1());
+        sceneSignIn = new Scene(display1());
         //SCENE LOGIN 1
         sceneLogin = new Scene(display2(), 700, 500);
 
         //STAGE 1 INITIAL SETTINGS
-        window1.setScene(scene1);
         window1.show();
+        window1.setScene(scene1);
 
         //Stage login
         loginWindow.setScene(sceneLogin);
         loginWindow.initModality(Modality.APPLICATION_MODAL);
-        loginWindow.setMinHeight(700);
+        loginWindow.setMinHeight(500);
         loginWindow.setMinWidth(500);
         Label label = new Label();
         label.setText("message");
@@ -137,9 +138,8 @@ public class App extends Application {
         });
 
         Button users = new Button("User");
-        users.setOnAction(e-> {
-            loginWindow.show();
-        });
+        users.setOnAction(e-> loginWindow.show());
+
         vBoxMenu.setBackground(background());
         vBoxMenu.setSpacing(20);
         vBoxMenu.setAlignment(Pos.CENTER);
@@ -148,7 +148,7 @@ public class App extends Application {
         return vBoxMenu;
     }
 
-    //CENTRAL MENU (SCENE 2)
+    //SETTINGS (SCENE 2)
     private VBox s2CentralMenu() {
 
         VBox vBoxSettings = new VBox();
@@ -158,7 +158,6 @@ public class App extends Application {
             fullscreen = ((CheckBox) e.getSource()).isSelected();
             window1.setFullScreen(fullscreen);
             clickSound.play();
-
         });
 
         Label label = new Label("Volume");
@@ -177,11 +176,6 @@ public class App extends Application {
             window1.setScene(scene1);
             window1.setFullScreen(fullscreen);
             clickSound.play();
-        });
-
-        Button user = new Button("Users");
-        user.setOnAction(e->{
-            loginWindow.show();
         });
 
         vBoxSettings.setSpacing(20);
@@ -232,6 +226,7 @@ public class App extends Application {
                 });
             }
         };
+
         Image image = new Image(App.class.getResource("/resources/Logo.png").toExternalForm());
         ImageView imageView= new ImageView(image);
 
@@ -244,16 +239,19 @@ public class App extends Application {
         vBoxBar.setPrefWidth(100);
 
         AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
-        vBoxBar.getChildren().addAll(imageView, mainMenu, buttonExit2, autoCompleteTextField);
 
         autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             int id = countryNameList.indexOf(newValue);
             if (id > -1) {
                 Country country = countryList.get(id);
                 System.out.println(country.getName() + ": " + country.getX() + " | " + country.getY());
+
+                /** ZOOM in countries here */
+
             }
         });
 
+        vBoxBar.getChildren().addAll(imageView, mainMenu, buttonExit2, autoCompleteTextField);
         return vBoxBar;
     }
 
@@ -289,17 +287,23 @@ public class App extends Application {
 
     private ScrollPane world() {
 
-        AnchorPane layout = new AnchorPane();
+        Group layout = new Group();
         Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
 
         layout.setOnMouseClicked(e ->{
-            if(e.getButton() == MouseButton.PRIMARY) {
 
+            Button button = new Pins();
+
+            if(e.getButton() == MouseButton.PRIMARY) {
                 if(e.getClickCount() == 2) {
-                    layout.getChildren().addAll(new Pins());
+
+
+                    button.setTranslateX(e.getX()-30);
+                    button.setTranslateY(e.getY()-50);
+
+                    layout.getChildren().addAll(button);
                 }
             }
-
          });
 
         layout.getChildren().setAll(new ImageView(backgroundImage));
@@ -313,21 +317,16 @@ public class App extends Application {
     }
 
     private ScrollPane zoomableScrollPane(Node content) {
-
         final double SCALE_DELTA = 1.1;
 
         Group contentGroup = new Group();
-        zoomGroup = new Group();
-        contentGroup.getChildren().add(zoomGroup);
-
         ScrollPane scroll = new ScrollPane();
+
         scroll.setPrefSize(700, 466);
         scroll.setPannable(true);
-        scroll.setContent(contentGroup);
-
 
         content.setOnScroll( (ScrollEvent event) -> {
-            event.consume();
+
             if (event.getDeltaY() == 0) {
                 return;
             }
@@ -335,14 +334,19 @@ public class App extends Application {
 
             content.setScaleX(content.getScaleX() * scaleFactor);
             content.setScaleY(content.getScaleY() * scaleFactor);
+
+            event.consume();
         });
 
-        zoomGroup.getChildren().add(content);
-
+        contentGroup.getChildren().add(content);
+        scroll.setContent(contentGroup);
         return scroll;
     }
 
     /** USER INTERFACE */
+
+    //SCENE LOG IN
+
     private GridPane display2() {
         // grid creation
 
@@ -379,7 +383,7 @@ public class App extends Application {
 
         // Adding code to buttons
         buttonNewUser.setOnAction(e -> {
-            loginWindow.setScene(sceneLogin1);
+            loginWindow.setScene(sceneSignIn);
         });
 
         buttonLogIn.setOnAction(e -> {
@@ -391,6 +395,7 @@ public class App extends Application {
                 User user = userList.get(index);
                 if(Objects.equals(user.getPassword(), password)){
                     System.out.println("Logged in");
+                    loginWindow.close();
                 }else {
                     System.out.println("Not logged in");
                 }
@@ -401,7 +406,10 @@ public class App extends Application {
         return grid;
     }
 
+    //SCENE SIGN IN
+
     private GridPane display1() {
+
         // grid creation
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -455,6 +463,7 @@ public class App extends Application {
                         System.out.println("User created");
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
+                        window1.show();
                     } catch (IOException e1) {
                         System.out.println("File not found");
                     }
