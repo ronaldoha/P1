@@ -407,7 +407,7 @@ public class App extends Application {
                 }else {
                     System.out.println("Not logged in");
                 }
-
+                /** PUT THIS AS A COMENT IF YOU WONT WORK ON IT (DOWN) */
                 if (configFile == null){
                     throw new IllegalArgumentException( "No settings loaded" );
 
@@ -422,6 +422,7 @@ public class App extends Application {
                         eta.printStackTrace();
                     }
                 }
+                /** PUT THIS AS A COMENT IF YOU WONT WORK ON IT (UP) */
 
             }else{
                 System.out.println("Not logged in");
