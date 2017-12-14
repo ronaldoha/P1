@@ -46,9 +46,6 @@ class Pins extends Button {
                     e.consume();
                 }
             }
-            if(e.getButton() == MouseButton.SECONDARY){
-                setVisible(false);
-            }
         });
     }
 }

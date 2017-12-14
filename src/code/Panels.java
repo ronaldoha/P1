@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 
 import java.awt.image.BufferedImage;
@@ -39,6 +40,11 @@ class Panels extends AnchorPane {
         btnLoad.setOnAction(t ->{
             FileChooser fileChooser = new FileChooser();
 
+            myImageView = new ImageView();
+            myImageView.setFitWidth(50);
+            myImageView.setFitHeight(50);
+
+
             //Set extension filter
             FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
             FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
@@ -54,15 +60,11 @@ class Panels extends AnchorPane {
             } catch (IOException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            this.getChildren().addAll(myImageView);
         });
 
-        myImageView = new ImageView();
-        myImageView.setFitWidth(200);
-        myImageView.setFitHeight(100);
-
-        VBox rootBox = new VBox();
-        rootBox.getChildren().addAll(btnLoad, myImageView);
-        this.getChildren().add(rootBox);
+        this.getChildren().add(btnLoad);
 
         setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY){
