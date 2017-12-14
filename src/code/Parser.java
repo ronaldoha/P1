@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 class Parser {
 
-    void parseCountries(){
+    void parseCountries() {
         File file = new File("CountryList.txt");
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<Country> objectList = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
 
-            while(scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
                 Country country = new Country(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]));
@@ -28,14 +28,14 @@ class Parser {
         App.countryList = objectList;
     }
 
-    void parseUsers(){
+    void parseUsers() {
         File file = new File("UserList.txt");
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<User> objectList = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
 
-            while(scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] values = line.split(";");
                 User user = new User(values[0], values[1]);

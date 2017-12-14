@@ -21,7 +21,6 @@ import resources.Sound;
 import javafx.scene.control.ScrollPane;
 
 import java.io.*;
-import java.lang.ref.Reference;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,10 +32,6 @@ public class App extends Application {
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
     private static Map<String, String> map = new HashMap<String, String>();
-
-    //ZOOM
-    Group zoomGroup;
-    Node content;
 
     //COUNTRY ENTRIES
     static ArrayList<String> countryNameList = new ArrayList<>();
@@ -157,6 +152,7 @@ public class App extends Application {
         CheckBox buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
             fullscreen = ((CheckBox) e.getSource()).isSelected();
+            buttonSetFS.selectedProperty();
             window1.setFullScreen(fullscreen);
             clickSound.play();
         });
@@ -317,6 +313,8 @@ public class App extends Application {
         return scroll;
     }
 
+    //GROUP THAT CONTAINS THE MAP, PINS...
+
     private ScrollPane zoomableScrollPane(Node content) {
         final double SCALE_DELTA = 1.1;
 
@@ -475,7 +473,6 @@ public class App extends Application {
         });
         return grid;
     }
-
 
     public static void main(String[] args) {
         launch(args);
