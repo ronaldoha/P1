@@ -449,20 +449,31 @@ public class App extends Application {
             pwBoxagain.setText("");
             String username = userTextField.getText();
             userTextField.setText("");
-            System.out.println(userNameList.indexOf(username));
+
             if (userNameList.indexOf(username)==-1){
                 if (passwordOne.equals(passwordTwo)) {
                     ArrayList rawData = new ArrayList();
+                    ArrayList fileName = new ArrayList();
                     for (User user : userList) {
                         rawData.add(user.getUsername() + ";" + user.getPassword());
+                        fileName.add(user.getUsername());
                     }
                     rawData.add(username + ";" + passwordOne);
+                    fileName.add(username);
                     try {
                         Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8"));
                         System.out.println("User created");
+
+                        /** HERE */
+
+                        new File("/configurations/" + fileName + ".properties");
+
+                        /** HERE*/
+
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
                         window1.show();
+                        System.out.println(userNameList.indexOf(username)+1);
                     } catch (IOException e1) {
                         System.out.println("File not found");
                     }
