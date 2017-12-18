@@ -324,7 +324,7 @@ public class App extends Application {
 
 
                     button.setTranslateX(e.getX()-30);
-                    button.setTranslateY(e.getY()-50);
+                    button.setTranslateY(e.getY()-90);
 
                     contentGroup.getChildren().addAll(button);
                     System.out.println(e.getX());
