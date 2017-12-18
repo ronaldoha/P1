@@ -407,18 +407,19 @@ public class App extends Application {
                 }else {
                     System.out.println("Not logged in");
                 }
+
                 /** PUT THIS AS A COMENT IF YOU WONT WORK ON IT (DOWN) */
                 if (configFile == null){
-                    throw new IllegalArgumentException( "No settings loaded" );
+                    throw new IllegalArgumentException( "No settings to load" );
 
                 }else {
 
                     try {
-                        configFile.load(this.getClass().getClassLoader().getResourceAsStream("users/" + username + "null.cfg"));
+                        configFile.load(this.getClass().getClassLoader().getResourceAsStream("users/" + username + ".cfg"));
+                        System.out.println("User " + username + " settings loaded");
 
                     } catch (Exception eta) {
 
-                        System.out.println("User " + username + " settings loaded");
                         eta.printStackTrace();
                     }
                 }
