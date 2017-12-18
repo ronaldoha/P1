@@ -392,44 +392,38 @@ public class App extends Application {
             String username = userTextField.getText();
             String password = pwBox.getText();
 
-            configFile = new Properties();
+            Properties configFile = new Properties();
+            InputStream inputStream = null;
 
             int index = userNameList.indexOf(username);
-            if(index > -1){
+            if(index > -1) {
 
                 User user = userList.get(index);
 
-                if(Objects.equals(user.getPassword(), password)){
+                if (Objects.equals(user.getPassword(), password)) {
+
+                    try {
+                        File file = new File("users/" + username + ".cfg");
+                        inputStream = new FileInputStream(file);
+                    } catch (Exception eta) {
+                        inputStream = null;
+                    }
+
+                    try {
+                        if (inputStream == null) {
+                            inputStream.getClass().getResourceAsStream("users/" + username + ".cfg");
+                        }
+                        configFile.load(inputStream);
+                    } catch (Exception eta) {
+                    }
 
                     System.out.println("Logged in");
                     loginWindow.close();
 
-                }else {
+                } else {
                     System.out.println("Not logged in");
                 }
-
-                /** PUT THIS AS A COMENT IF YOU WONT WORK ON IT (DOWN) */
-                if (configFile == null){
-                    throw new IllegalArgumentException( "No settings to load" );
-
-                }else {
-
-                    try {
-                        configFile.load(this.getClass().getClassLoader().getResourceAsStream("users/" + username + ".cfg"));
-                        System.out.println("User " + username + " settings loaded");
-
-                    } catch (Exception eta) {
-
-                        eta.printStackTrace();
-                    }
-                }
-                /** PUT THIS AS A COMENT IF YOU WONT WORK ON IT (UP) */
-
-            }else{
-                System.out.println("Not logged in");
             }
-
-
         });
         return grid;
     }
