@@ -393,7 +393,7 @@ public class App extends Application {
             String password = pwBox.getText();
 
             Properties configFile = new Properties();
-            InputStream inputStream = null;
+            InputStream inputStream;
 
             int index = userNameList.indexOf(username);
             if(index > -1) {
@@ -407,6 +407,7 @@ public class App extends Application {
                         inputStream = new FileInputStream(file);
                     } catch (Exception eta) {
                         inputStream = null;
+                        System.out.println("Settings not found for user: " + username);
                     }
 
                     try {
@@ -415,6 +416,7 @@ public class App extends Application {
                         }
                         configFile.load(inputStream);
                     } catch (Exception eta) {
+                        System.out.println("Settings loaded");
                     }
 
                     System.out.println("Logged in");
