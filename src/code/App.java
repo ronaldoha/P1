@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -36,6 +35,7 @@ public class App extends Application {
     //Properties file
     private Properties configFile = new Properties();
     private InputStream inputStream;
+    private File file;
 
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
@@ -107,8 +107,6 @@ public class App extends Application {
         loginWindow.initModality(Modality.APPLICATION_MODAL);
         loginWindow.setMinHeight(500);
         loginWindow.setMinWidth(500);
-        Label label = new Label();
-        label.setText("message");
 
         backgroundSound.play();
     }
@@ -141,7 +139,10 @@ public class App extends Application {
         buttonExit.setOnAction(e -> {
             clickSound.play();
             boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
-            if (result) window1.close();
+            if (result){
+                window1.close();
+
+            }
         });
 
         Button users = new Button("User");
@@ -175,7 +176,6 @@ public class App extends Application {
 
         buttonSetVol.valueProperty().addListener((observable, oldValue, newValue) -> {
             volume = newValue.doubleValue();
-            configFile.setProperty("volume", "newValue.doubleValue()");
             backgroundSound.setVolume(volume);
             clickSound.setVolume(volume);
         });
@@ -231,6 +231,9 @@ public class App extends Application {
                     if (result) {
                         window1.close();
                         clickSound.play();
+                        try {
+                            configFile.store(new FileOutputStream(file), null);
+                        }catch(Exception eta){}
                     }
                 });
             }
@@ -327,8 +330,6 @@ public class App extends Application {
                     button.setTranslateY(e.getY()-90);
 
                     contentGroup.getChildren().addAll(button);
-                    System.out.println(e.getX());
-                    System.out.println(e.getY());
                 }
             }
         });
@@ -411,7 +412,7 @@ public class App extends Application {
                 if (Objects.equals(user.getPassword(), password)) {
 
                     try {
-                        File file = new File("users/" + username + ".cfg");
+                        file = new File("users/" + username + ".cfg");
                         inputStream = new FileInputStream(file);
                     } catch (Exception eta) {
                         inputStream = null;
@@ -422,7 +423,9 @@ public class App extends Application {
                         if (inputStream == null) {
                             inputStream.getClass().getResourceAsStream("users/" + username + ".cfg");
                         }
+
                         configFile.load(inputStream);
+
                     } catch (Exception eta) {
                         System.out.println("Settings loaded");
                     }
@@ -483,7 +486,7 @@ public class App extends Application {
             String username = userTextField.getText();
             userTextField.setText("");
 
-            if (userNameList.indexOf(username)==-1){
+            if (userNameList.indexOf(username) == -1){
                 if (passwordOne.equals(passwordTwo)) {
 
                     ArrayList rawData = new ArrayList();
