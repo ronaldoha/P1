@@ -30,7 +30,6 @@ import java.util.*;
 public class App extends Application {
 
     //Scroll
-    final double SCALE_DELTA = 1.1;
     private Group contentGroup = new Group();
     private ScrollPane scroll = new ScrollPane();
 
@@ -64,6 +63,7 @@ public class App extends Application {
     //Sound controls
     private Sound clickSound = new Sound("ClickSound.wav");
     private Sound backgroundSound = new Sound("BackgroundMusic.mp3");
+    private Node content;
 
     //
 
@@ -305,6 +305,8 @@ public class App extends Application {
 
     private ScrollPane zoomableScrollPane(Node content) {
 
+        this.content = content;
+
         contentGroup = new Group();
         Image backgroundImage = new Image(App.class.getResource("/resources/Map.png").toExternalForm());
 
@@ -320,26 +322,13 @@ public class App extends Application {
 
 
                     button.setTranslateX(e.getX()-30);
-                    button.setTranslateY(e.getY()-50);
+                    button.setTranslateY(e.getY()-90);
 
                     contentGroup.getChildren().addAll(button);
                     System.out.println(e.getX());
                     System.out.println(e.getY());
                 }
             }
-        });
-
-        content.setOnScroll( (ScrollEvent event) -> {
-
-            if (event.getDeltaY() == 0) {
-                return;
-            }
-            double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-            content.setScaleX(content.getScaleX() * scaleFactor);
-            content.setScaleY(content.getScaleY() * scaleFactor);
-
-            event.consume();
         });
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
