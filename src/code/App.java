@@ -307,6 +307,8 @@ public class App extends Application {
 
         this.content = content;
 
+        final double SCALE_DELTA = 1.1;
+
         contentGroup = new Group();
         Image backgroundImage = new Image(App.class.getResource("/resources/Map.png").toExternalForm());
 
@@ -322,13 +324,26 @@ public class App extends Application {
 
 
                     button.setTranslateX(e.getX()-30);
-                    button.setTranslateY(e.getY()-90);
+                    button.setTranslateY(e.getY()-50);
 
                     contentGroup.getChildren().addAll(button);
                     System.out.println(e.getX());
                     System.out.println(e.getY());
                 }
             }
+        });
+
+        content.setOnScroll( (ScrollEvent event) -> {
+
+            if (event.getDeltaY() == 0) {
+                return;
+            }
+            double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+            contentGroup.setScaleX(contentGroup.getScaleX() * scaleFactor);
+            contentGroup.setScaleY(contentGroup.getScaleY() * scaleFactor);
+
+            event.consume();
         });
 
         scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
