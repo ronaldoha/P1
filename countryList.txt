@@ -1,29 +1,29 @@
-Denmark;446;458
-Poland;594;552
+Denmark;100;100
+Poland;-50;-100
 Romania;716;704
-Spain;166;848
-Austria;508;688
-Italy;498;832
-Belgium;340;560
-Latvia;660;410
-Bulgaria;747;790
-Lithuania;653;454
-Croatia;540;757
-Luxembourg;367;724
+Spain;400;-400
+Austria;-100;-150
+Italy;200;-350
+Belgium;260;-10
+Latvia;-100;70
+Bulgaria;-200;-350
+Lithuania;-150;50
+Croatia;-80;-180
+Luxembourg;250;-70
 Cyprus;957;948
 Malta;536;1002
-Czech Republic;530;626
-Netherlands;359;560
-Estonia;660;358
-Portugal;56;861
-Finland;636;202
-Romania;721;708
-France;293;710
-Slovakia;613;645
-Germany;441;600
-Slovenia;530;724
-Greece;706;890
-Hungary;614;690
-Sweden;511;275
-Ireland;145;500
-United Kingdom;240;480
+Czech Republic;100;-120
+Netherlands;250;0
+Estonia;-100;100
+Portugal;500;-400
+Finland;-100;200
+Romania;-100;-300
+France;250;-220
+Slovakia;-50;-150
+Germany;200;-70
+Slovenia;-100;-200
+Greece;-200;-400
+Hungary;-50;-200
+Sweden;20;200
+Ireland;400;50
+United Kingdom;350;100

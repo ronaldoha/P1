@@ -29,7 +29,14 @@ import java.util.*;
 
 public class App extends Application {
 
-    Properties configFile;
+    //Scroll
+    final double SCALE_DELTA = 1.1;
+    private Group contentGroup = new Group();
+    private ScrollPane scroll = new ScrollPane();
+
+    //Properties file
+    private Properties configFile = new Properties();
+    private InputStream inputStream;
 
     // USER INTERFACE controls
     private static List<String> list = new ArrayList<>();
@@ -57,6 +64,8 @@ public class App extends Application {
     //Sound controls
     private Sound clickSound = new Sound("ClickSound.wav");
     private Sound backgroundSound = new Sound("BackgroundMusic.mp3");
+
+    //
 
     @Override
     public void start(Stage primaryStage) {
@@ -166,6 +175,7 @@ public class App extends Application {
 
         buttonSetVol.valueProperty().addListener((observable, oldValue, newValue) -> {
             volume = newValue.doubleValue();
+            configFile.setProperty("volume", "newValue.doubleValue()");
             backgroundSound.setVolume(volume);
             clickSound.setVolume(volume);
         });
@@ -245,8 +255,16 @@ public class App extends Application {
                 Country country = countryList.get(id);
                 System.out.println(country.getName() + ": " + country.getX() + " | " + country.getY());
 
-                /** ZOOM in countries here */
-
+                contentGroup.setTranslateX(country.getX());
+                contentGroup.setTranslateY(country.getY());
+                contentGroup.setScaleX(1.4);
+                contentGroup.setScaleY(1.4);
+            }
+            else {
+                contentGroup.setTranslateY(0);
+                contentGroup.setTranslateX(0);
+                contentGroup.setScaleY(1);
+                contentGroup.setScaleX(1);
             }
         });
 
@@ -261,7 +279,7 @@ public class App extends Application {
 
         anchorPane.getChildren().addAll(borderPane);
         borderPane.setRight(sidePane());
-        borderPane.setLeft(world());
+        borderPane.setLeft(zoomableScrollPane(contentGroup));
         borderPane.setPrefSize(800, 466);
 
         return anchorPane;
@@ -282,14 +300,18 @@ public class App extends Application {
         return new Background(backgroundImage);
     }
 
-    //WORLD MAP
 
-    private ScrollPane world() {
+    //GROUP THAT CONTAINS THE MAP, PINS...
 
-        Group layout = new Group();
-        Image backgroundImage = new Image(App.class.getResource("/resources/Europe.png").toExternalForm());
+    private ScrollPane zoomableScrollPane(Node content) {
 
-        layout.setOnMouseClicked(e ->{
+        contentGroup = new Group();
+        Image backgroundImage = new Image(App.class.getResource("/resources/Map.png").toExternalForm());
+
+        scroll = new ScrollPane();
+        scroll.setPrefSize(700, 466);
+        scroll.setPannable(true);
+        contentGroup.setOnMouseClicked(e ->{
 
             Button button = new Pins();
 
@@ -300,31 +322,12 @@ public class App extends Application {
                     button.setTranslateX(e.getX()-30);
                     button.setTranslateY(e.getY()-50);
 
-                    layout.getChildren().addAll(button);
+                    contentGroup.getChildren().addAll(button);
+                    System.out.println(e.getX());
+                    System.out.println(e.getY());
                 }
             }
-         });
-
-        layout.getChildren().setAll(new ImageView(backgroundImage));
-
-        ScrollPane scroll = zoomableScrollPane(layout);
-
-        scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
-        scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-
-        return scroll;
-    }
-
-    //GROUP THAT CONTAINS THE MAP, PINS...
-
-    private ScrollPane zoomableScrollPane(Node content) {
-        final double SCALE_DELTA = 1.1;
-
-        Group contentGroup = new Group();
-        ScrollPane scroll = new ScrollPane();
-
-        scroll.setPrefSize(700, 466);
-        scroll.setPannable(true);
+        });
 
         content.setOnScroll( (ScrollEvent event) -> {
 
@@ -339,6 +342,10 @@ public class App extends Application {
             event.consume();
         });
 
+        scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
+        scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+
+        contentGroup.getChildren().setAll(new ImageView(backgroundImage));
         contentGroup.getChildren().add(content);
         scroll.setContent(contentGroup);
         return scroll;
@@ -387,13 +394,10 @@ public class App extends Application {
             loginWindow.setScene(sceneSignIn);
         });
 
-
         buttonLogIn.setOnAction(e -> {
+
             String username = userTextField.getText();
             String password = pwBox.getText();
-
-            Properties configFile = new Properties();
-            InputStream inputStream;
 
             int index = userNameList.indexOf(username);
             if(index > -1) {
@@ -432,7 +436,7 @@ public class App extends Application {
 
     //SCENE SIGN IN
 
-    public GridPane signIn() {
+    private GridPane signIn() {
 
         // grid creation
         GridPane grid = new GridPane();
@@ -482,7 +486,6 @@ public class App extends Application {
                     for (User user : userList) {
 
                         rawData.add(user.getUsername() + ";" + user.getPassword());
-
                     }
 
                     rawData.add(username + ";" + passwordOne);
