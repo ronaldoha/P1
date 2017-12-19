@@ -324,9 +324,30 @@ public class App extends Application {
             if(e.getButton() == MouseButton.PRIMARY) {
                 if(e.getClickCount() == 2) {
 
+                    button.setTranslateX(e.getX() - 30);
+                    button.setTranslateY(e.getY() - 90);
+                    button.setOnMouseClicked(et -> {
+                        if (et.getButton() == MouseButton.PRIMARY) {
+                            if (et.getClickCount() == 2) {
+                                HBox hBox = new Panels();
 
-                    button.setTranslateX(e.getX()-30);
-                    button.setTranslateY(e.getY()-90);
+                                hBox.setTranslateY(e.getY() - 300);
+                                hBox.setTranslateX(e.getX() - 90);
+
+                                hBox.setOnMouseClicked(es ->{
+                                    if (es.getButton() == MouseButton.SECONDARY) {
+                                        contentGroup.getChildren().remove(hBox);
+                                    }
+                                });
+
+                                contentGroup.getChildren().add(hBox);
+                            }
+                        }
+
+                        if (et.getButton() == MouseButton.SECONDARY) {
+                            contentGroup.getChildren().remove(button);
+                        }
+                    });
 
                     contentGroup.getChildren().addAll(button);
                 }

@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 class Pins extends Button {
     public double mouseX, mouseY, deltaX, deltaY, posX, posY;
@@ -32,19 +33,6 @@ class Pins extends Button {
             posY = getLayoutY();
         });
 
-        setOnMouseClicked( e ->{
-            AnchorPane anchorPane = new Panels();
-            if(e.getButton() == MouseButton.PRIMARY) {
-                if (e.getClickCount() == 2) {
 
-                    anchorPane.isResizable();
-                    anchorPane.setTranslateY(e.getY() - 150);
-                    anchorPane.setTranslateX(e.getX() - 90);
-
-                    getChildren().add(anchorPane);
-                    e.consume();
-                }
-            }
-        });
     }
 }
