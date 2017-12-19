@@ -164,7 +164,6 @@ public class App extends Application {
         CheckBox buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
             fullscreen = ((CheckBox) e.getSource()).isSelected();
-            buttonSetFS.selectedProperty();
             window1.setFullScreen(fullscreen);
             clickSound.play();
         });
@@ -425,7 +424,6 @@ public class App extends Application {
                         }
 
                         configFile.load(inputStream);
-
                     } catch (Exception eta) {
                         System.out.println("Settings loaded");
                     }
@@ -509,7 +507,6 @@ public class App extends Application {
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
                         window1.show();
-                        System.out.println(userNameList.indexOf(username)+1);
 
                     } catch (IOException e1) {
                         System.out.println("File not found");

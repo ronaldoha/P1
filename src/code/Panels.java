@@ -68,23 +68,8 @@ class Panels extends AnchorPane {
 
         setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.SECONDARY){
-                setVisible(false);
+                    setVisible(false);
             }
-        });
-        setOnMousePressed(e -> {
-            mouseX = e.getSceneX();
-            mouseY = e.getSceneY();
-            toFront();
-        });
-        setOnMouseDragged(e -> {
-            deltaX = e.getSceneX() - mouseX + posX;
-            deltaY = e.getSceneY() - mouseY + posY;
-            setLayoutX(deltaX);
-            setLayoutY(deltaY);
-        });
-        setOnMouseReleased((MouseEvent event) -> {
-            posX = getLayoutX();
-            posY = getLayoutY();
         });
 
 
