@@ -70,7 +70,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
+        //Parser
         countryParser.parseCountries();
         userParser.parseUsers();
 
@@ -98,11 +98,11 @@ public class App extends Application {
         //SCENE LOGIN 1
         sceneLogin = new Scene(logIn(), 700, 500);
 
-        //STAGE 1 INITIAL SETTINGS
+        //Stage for the map
         window1.show();
         window1.setScene(scene1);
 
-        //Stage login
+        //Stage for login and Sign In
         loginWindow.setScene(sceneLogin);
         loginWindow.initModality(Modality.APPLICATION_MODAL);
         loginWindow.setMinHeight(500);
@@ -162,6 +162,7 @@ public class App extends Application {
 
         VBox vBoxSettings = new VBox();
 
+        //Full screen
         CheckBox buttonSetFS = new CheckBox("Full Screen");
         buttonSetFS.setOnAction(e -> {
             fullscreen = ((CheckBox) e.getSource()).isSelected();
@@ -169,6 +170,7 @@ public class App extends Application {
             clickSound.play();
         });
 
+        //Volume slider
         Label label = new Label("Volume");
 
         Slider buttonSetVol = new Slider(0, 1, 1);
@@ -180,6 +182,7 @@ public class App extends Application {
             clickSound.setVolume(volume);
         });
 
+        //Back to previous
         Button buttonBack = new Button("BACK");
         buttonBack.setOnAction(event -> {
             window1.setScene(scene1);
@@ -196,6 +199,7 @@ public class App extends Application {
     //SIDE BAR IN WORLD (SCENE 3)
     private VBox sidePane() {
 
+        //Preferences of the side bar
         VBox vBoxBar = new VBox() {
             @Override
             protected void updateBounds() {
@@ -205,6 +209,8 @@ public class App extends Application {
                 super.setAlignment(Pos.TOP_CENTER);
             }
         };
+
+
         Button mainMenu = new Button("App Menu") {
             @Override
             protected void setHeight(double value) {
@@ -219,6 +225,7 @@ public class App extends Application {
                 });
             }
         };
+
         Button buttonExit2 = new Button("Exit") {
             @Override
             protected void setHeight(double value) {
@@ -239,6 +246,7 @@ public class App extends Application {
             }
         };
 
+        //Logo loader
         Image image = new Image(App.class.getResource("/resources/Logo.png").toExternalForm());
         ImageView imageView= new ImageView(image);
 
@@ -250,6 +258,8 @@ public class App extends Application {
 
         vBoxBar.setPrefWidth(100);
 
+
+        //Searcg bar zoom
         AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
 
         autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -266,8 +276,8 @@ public class App extends Application {
             else {
                 contentGroup.setTranslateY(0);
                 contentGroup.setTranslateX(0);
-                contentGroup.setScaleY(1);
-                contentGroup.setScaleX(1);
+                contentGroup.setScaleY(1.1);
+                contentGroup.setScaleX(1.1);
             }
         });
 
@@ -312,24 +322,27 @@ public class App extends Application {
 
         final double SCALE_DELTA = 1.1;
 
+
         contentGroup = new Group();
         Image backgroundImage = new Image(App.class.getResource("/resources/Map.png").toExternalForm());
 
         scroll = new ScrollPane();
         scroll.setPrefSize(700, 466);
         scroll.setPannable(true);
+
+        //Pins creator
         contentGroup.setOnMouseClicked(e ->{
 
             Button button = new Pins();
 
             if(e.getButton() == MouseButton.PRIMARY) {
-                if(e.getClickCount() == 2) {
+                if(e.getClickCount() == 2) { //settings of the pins, position
 
                     button.setTranslateX(e.getX() - 30);
                     button.setTranslateY(e.getY() - 90);
                     button.setOnMouseClicked(et -> {
                         if (et.getButton() == MouseButton.PRIMARY) {
-                            if (et.getClickCount() == 2) {
+                            if (et.getClickCount() == 2) { //settings for the hbox, position
                                 HBox hBox = new Panels();
 
                                 hBox.setTranslateY(e.getY() - 300);
@@ -341,16 +354,16 @@ public class App extends Application {
                                     }
                                 });
 
-                                contentGroup.getChildren().add(hBox);
+                                contentGroup.getChildren().add(hBox); //remove the pop pane chose
                             }
                         }
 
                         if (et.getButton() == MouseButton.SECONDARY) {
-                            contentGroup.getChildren().remove(button);
+                            contentGroup.getChildren().remove(button);  //remove the pins
                         }
                     });
 
-                    contentGroup.getChildren().addAll(button);
+                    contentGroup.getChildren().addAll(button); // add the pins
                 }
             }
         });
@@ -437,14 +450,13 @@ public class App extends Application {
                         inputStream = new FileInputStream(file);
                     } catch (Exception eta) {
                         inputStream = null;
-                        System.out.println("Settings not found for user: " + username);
+                        System.out.println("Settings not found for user: " + username); //tries to create the file in case it doesn't exist
                     }
 
                     try {
                         if (inputStream == null) {
-                            inputStream.getClass().getResourceAsStream("users/" + username + ".cfg");
+                            inputStream.getClass().getResourceAsStream("users/" + username + ".cfg"); //if there is no file loaded before, loads the new settings
                         }
-
                         configFile.load(inputStream);
                     } catch (Exception eta) {
                         System.out.println("Settings loaded");
@@ -512,7 +524,7 @@ public class App extends Application {
                     ArrayList rawData = new ArrayList();
                     for (User user : userList) {
 
-                        rawData.add(user.getUsername() + ";" + user.getPassword());
+                        rawData.add(user.getUsername() + ";" + user.getPassword()); //puts the username and the password in an array
                     }
 
                     rawData.add(username + ";" + passwordOne);
@@ -520,11 +532,11 @@ public class App extends Application {
 
                     try {
 
-                        Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8"));
+                        Files.write(Paths.get("UserList.txt"), rawData, Charset.forName("UTF-8")); // add the info in rawdata to the file
 
                         System.out.println("User created");
 
-                        Files.write(Paths.get("users/"+ fileName +".cfg"), new ArrayList<>(), Charset.forName("UTF-8"));
+                        Files.write(Paths.get("users/"+ fileName +".cfg"), new ArrayList<>(), Charset.forName("UTF-8")); //creates the cfg for the user
 
                         userParser.parseUsers();
                         loginWindow.setScene(sceneLogin);
