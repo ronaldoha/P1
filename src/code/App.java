@@ -112,6 +112,7 @@ public class App extends Application {
     }
 
     //BUTTON SETTINGS FOR "WORLD" SIDE BAR STYLE
+
     private static final String IDLE_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: #ffffff";
     private static final String HOVERED_BUTTON_STYLE = "-fx-background-color:#4682b4; -fx-shadow-highlight-color: none;" +
             "-fx-outer-border: none; -fx-inner-border: none;  -fx-text-fill: #ffffff; -fx-outer-CornerRadii: none";
@@ -354,7 +355,7 @@ public class App extends Application {
             }
         });
 
-        content.setOnScroll( (ScrollEvent event) -> {
+        contentGroup.setOnScroll( (ScrollEvent event) -> {
 
             if (event.getDeltaY() == 0) {
                 return;
