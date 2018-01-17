@@ -18,7 +18,6 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import resources.Sound;
 import javafx.scene.control.ScrollPane;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -142,7 +141,6 @@ public class App extends Application {
             boolean result = ConfirmBox.display("Exit", "Are you sure You want to Exit?");
             if (result){
                 window1.close();
-
             }
         });
 
@@ -169,7 +167,6 @@ public class App extends Application {
             window1.setFullScreen(fullscreen);
             clickSound.play();
         });
-
         //Volume slider
         Label label = new Label("Volume");
 
@@ -193,6 +190,7 @@ public class App extends Application {
         vBoxSettings.setSpacing(20);
         vBoxSettings.setAlignment(Pos.CENTER);
         vBoxSettings.getChildren().addAll(label, buttonSetVol, buttonSetFS, buttonBack);
+
         return vBoxSettings;
     }
 
@@ -239,8 +237,13 @@ public class App extends Application {
                         window1.close();
                         clickSound.play();
                         try {
-                            configFile.store(new FileOutputStream(file), null);
-                        }catch(Exception eta){}
+
+                            configFile.store(new FileOutputStream(file), "");
+
+                        }catch(Exception eta){
+                            configFile.put(volume,2);
+                            configFile.put(fullscreen, (((CheckBox) e.getSource()).isSelected()));
+                        }
                     }
                 });
             }
@@ -259,7 +262,7 @@ public class App extends Application {
         vBoxBar.setPrefWidth(100);
 
 
-        //Searcg bar zoom
+        //Search bar zoom
         AutoCompleteTextField autoCompleteTextField = new AutoCompleteTextField();
 
         autoCompleteTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -366,6 +369,7 @@ public class App extends Application {
                     contentGroup.getChildren().addAll(button); // add the pins
                 }
             }
+            configFile.put(button,"1");
         });
 
         contentGroup.setOnScroll( (ScrollEvent event) -> {
@@ -457,7 +461,9 @@ public class App extends Application {
                         if (inputStream == null) {
                             inputStream.getClass().getResourceAsStream("users/" + username + ".cfg"); //if there is no file loaded before, loads the new settings
                         }
+
                         configFile.load(inputStream);
+
                     } catch (Exception eta) {
                         System.out.println("Settings loaded");
                     }

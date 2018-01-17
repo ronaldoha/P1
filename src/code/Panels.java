@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.scene.control.TextArea;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +26,14 @@ class Panels extends HBox {
         this.setPrefHeight(200);
         this.setPrefWidth(200);
 
-
+        Button btnText = new Button("Add Text");
         Button btnLoad = new Button("Load");
+        btnText.setOnAction(e -> {
+            TextArea textArea = new TextArea();
+            textArea.setPrefSize(50,50);
+            getChildren().add(textArea);
+        });
+
         btnLoad.setOnAction(t ->{
             FileChooser fileChooser = new FileChooser();
 
@@ -51,7 +58,7 @@ class Panels extends HBox {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            this.getChildren().addAll(myImageView);
+            getChildren().addAll(myImageView);
         });
 
         setOnMousePressed(e -> {
@@ -70,6 +77,7 @@ class Panels extends HBox {
             posY = getLayoutY();
         });
 
-        this.getChildren().add(btnLoad);
+
+        this.getChildren().addAll(btnLoad,btnText);
     }
 }
